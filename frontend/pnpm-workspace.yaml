@@ -1,0 +1,5 @@
+# Configurações do pnpm (v11+ lê estas chaves daqui, não mais do package.json).
+# Aprova explicitamente os pacotes autorizados a rodar scripts de build,
+# evitando o erro ERR_PNPM_IGNORED_BUILDS no `pnpm install`.
+allowBuilds:
+  esbuild: true

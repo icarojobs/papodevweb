@@ -1,0 +1,21 @@
+<svg width="340" height="80" viewBox="0 0 340 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Papo Dev Web</title>
+  <!-- Ícone: balão de conversa verde com símbolo de código -->
+  <g transform="translate(4 6)">
+    <g fill="#00a884">
+      <rect x="2" y="6" width="62" height="52" rx="14" />
+      <path d="M15 53 L15 68 L29 55 Z" />
+    </g>
+    <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M27 26 L18 34 L27 42" />
+      <path d="M44 26 L53 34 L44 42" />
+      <path d="M38 23 L31 45" />
+    </g>
+  </g>
+  <!-- Wordmark -->
+  <g font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700" font-size="26">
+    <text x="84" y="40" fill="#e9edef">Papo</text>
+    <text x="146" y="40" fill="#00a884">Dev</text>
+    <text x="84" y="64" fill="#8696a0" font-size="15" font-weight="600" letter-spacing="6">WEB</text>
+  </g>
+</svg>

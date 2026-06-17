@@ -1,0 +1,23 @@
+playground/
+
+# Ambiente
+.env
+.env.local
+
+# Python / Backend
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+backend/htmlcov/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+*.tsbuildinfo
+
+# Editores / SO
+.DS_Store

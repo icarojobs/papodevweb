@@ -1,0 +1,14 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+email-validator==2.2.0
+motor==3.6.0
+python-socketio==5.12.1
+redis==5.2.1
+aio-pika==9.5.4
+minio==7.2.13
+argon2-cffi==23.1.0
+pyjwt==2.10.1
+python-multipart==0.0.20
+aiosmtplib==3.0.2
