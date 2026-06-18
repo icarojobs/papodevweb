@@ -32,7 +32,7 @@ describe('LoginPage', () => {
     expect(authService.login).not.toHaveBeenCalled()
   })
 
-  it('faz login e navega para a home', async () => {
+  it('faz login e navega para o chat', async () => {
     vi.mocked(authService.login).mockResolvedValue({
       access_token: 't',
       token_type: 'bearer',
@@ -49,7 +49,7 @@ describe('LoginPage', () => {
     await userEvent.type(screen.getByLabelText('Senha'), 'senhaSegura123')
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/'))
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/chat'))
   })
 
   it('mostra toast de erro quando o login falha', async () => {

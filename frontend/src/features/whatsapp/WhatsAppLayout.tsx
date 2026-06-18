@@ -1,16 +1,18 @@
 import { Box, Flex, Icon, LightMode, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsBroadcast } from 'react-icons/bs'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import { TbCircleDashed } from 'react-icons/tb'
+import { useNavigate } from 'react-router-dom'
 
+import { ROUTES } from '@/lib/constants'
 import { useAuthStore } from '@/store/auth.store'
+import { useChatStore } from '@/store/chat.store'
 import { DownloadPromo } from './components/DownloadPromo'
 import { EmptyState } from './components/EmptyState'
 import { MetaAiIcon } from './components/MetaAiIcon'
 import { NavRail, type Section } from './components/NavRail'
 import { ChatView } from './conversation/ChatView'
-import type { Conversation } from './data/mock'
 import { ChannelsPanel } from './panels/ChannelsPanel'
 import { ChatsPanel } from './panels/ChatsPanel'
 import { CommunitiesPanel } from './panels/CommunitiesPanel'
@@ -31,15 +33,34 @@ function PromoPane() {
 
 export function WhatsAppLayout() {
   const [section, setSection] = useState<Section>('chats')
-  const [selectedChat, setSelectedChat] = useState<Conversation | null>(null)
+  const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
   const logout = useAuthStore((s) => s.logout)
   const userName = user?.full_name ?? 'Você'
 
+  // Logout explícito: encerra a sessão e volta para a landing.
+  const handleLogout = async () => {
+    await logout()
+    navigate(ROUTES.HOME)
+  }
+
+  const conversations = useChatStore((s) => s.conversations)
+  const activeConversationId = useChatStore((s) => s.activeConversationId)
+  const initialize = useChatStore((s) => s.initialize)
+  const teardown = useChatStore((s) => s.teardown)
+
+  useEffect(() => {
+    initialize()
+    return () => teardown()
+  }, [initialize, teardown])
+
+  const selectedChat = conversations.find((c) => c.id === activeConversationId) ?? null
+  const unreadChats = conversations.reduce((total, c) => total + (c.unread > 0 ? 1 : 0), 0)
+
   const renderPanel = () => {
     switch (section) {
       case 'chats':
-        return <ChatsPanel selectedId={selectedChat?.id} onSelectChat={setSelectedChat} />
+        return <ChatsPanel />
       case 'status':
         return <StatusPanel userName={userName} />
       case 'channels':
@@ -47,7 +68,9 @@ export function WhatsAppLayout() {
       case 'communities':
         return <CommunitiesPanel />
       case 'settings':
-        return <SettingsPanel userName={userName} about={ABOUT} phone={PHONE} onLogout={logout} />
+        return (
+          <SettingsPanel userName={userName} about={ABOUT} phone={PHONE} onLogout={handleLogout} />
+        )
       case 'meta':
         return (
           <Box p={6} bg={WA.panelBg} h="100%">
@@ -108,7 +131,12 @@ export function WhatsAppLayout() {
   return (
     <LightMode>
       <Flex h="100vh" bg={WA.panelBg} overflow="hidden" color={WA.textPrimary}>
-        <NavRail active={section} onSelect={setSection} userName={userName} unreadChats={27} />
+        <NavRail
+          active={section}
+          onSelect={setSection}
+          userName={userName}
+          unreadChats={unreadChats || undefined}
+        />
         <Box w={LIST_WIDTH} flexShrink={0} borderRight={`1px solid ${WA.border}`} h="100%">
           {renderPanel()}
         </Box>

@@ -55,7 +55,7 @@ export function SettingsOverview({ userName, about, onNavigate, onOpenShortcuts,
         <SettingNavRow icon={MdNotificationsNone} title="Notifications" subtitle="Messages, groups, sounds" onClick={() => onNavigate('notifications')} />
         <SettingNavRow icon={MdOutlineKeyboard} title="Keyboard shortcuts" subtitle="Quick actions" onClick={onOpenShortcuts} />
         <SettingNavRow icon={MdHelpOutline} title="Help and feedback" subtitle="Help centre, contact us, privacy policy" onClick={() => onNavigate('help')} />
-        <SettingNavRow icon={MdLogout} title="Log out" danger onClick={onLogout} />
+        <SettingNavRow icon={MdLogout} title="Sair" danger onClick={onLogout} />
       </Box>
     </Box>
   )

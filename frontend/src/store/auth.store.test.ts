@@ -9,6 +9,7 @@ vi.mock('@/services/auth.service', () => ({
   authService: {
     login: vi.fn(),
     logout: vi.fn(),
+    refresh: vi.fn(),
   },
 }))
 
@@ -46,6 +47,30 @@ describe('useAuthStore', () => {
     await useAuthStore.getState().logout()
 
     expect(useAuthStore.getState().isAuthenticated).toBe(false)
+    expect(localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)).toBeNull()
+  })
+
+  it('bootstrap restaura a sessão via refresh', async () => {
+    vi.mocked(authService.refresh).mockResolvedValue(tokenResponse)
+    useAuthStore.setState({ initializing: true })
+
+    await useAuthStore.getState().bootstrap()
+
+    expect(useAuthStore.getState().isAuthenticated).toBe(true)
+    expect(useAuthStore.getState().user?.email).toBe('maria@example.com')
+    expect(useAuthStore.getState().initializing).toBe(false)
+    expect(localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)).toBe('token-123')
+  })
+
+  it('bootstrap sem sessão válida deixa deslogado', async () => {
+    vi.mocked(authService.refresh).mockRejectedValue(new Error('401'))
+    useAuthStore.setState({ initializing: true, isAuthenticated: true })
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, 'velho')
+
+    await useAuthStore.getState().bootstrap()
+
+    expect(useAuthStore.getState().isAuthenticated).toBe(false)
+    expect(useAuthStore.getState().initializing).toBe(false)
     expect(localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)).toBeNull()
   })
 })

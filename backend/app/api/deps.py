@@ -10,9 +10,15 @@ from app.core.constants import BEARER_SCHEME, ERR_INVALID_TOKEN, TokenType
 from app.core.security import decode_token
 from app.db.mongodb import get_database
 from app.models.user import User
+from app.repositories.conversation_repository import ConversationRepository
+from app.repositories.message_repository import MessageRepository
 from app.repositories.user_repository import UserRepository
 from app.services.auth_service import AuthService
+from app.services.chat_service import ChatService
 from app.services.email_service import send_email_verification_email, send_password_reset_email
+from app.services.factory import build_media_service, build_presence_service
+from app.services.media_service import MediaService
+from app.services.presence_service import PresenceService
 
 EmailSender = Callable[[str, str], Awaitable[None]]
 
@@ -41,6 +47,44 @@ def get_auth_service(
     repository: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> AuthService:
     return AuthService(repository)
+
+
+def get_conversation_repository(
+    database: Annotated[AsyncIOMotorDatabase, Depends(get_db)],
+) -> ConversationRepository:
+    return ConversationRepository(database)
+
+
+def get_message_repository(
+    database: Annotated[AsyncIOMotorDatabase, Depends(get_db)],
+) -> MessageRepository:
+    return MessageRepository(database)
+
+
+def get_presence_service() -> PresenceService:
+    """Serviço de presença (Redis). Substituível por um fake em testes."""
+    return build_presence_service()
+
+
+def get_media_service() -> MediaService:
+    """Serviço de mídia (MinIO). Substituível por um fake em testes."""
+    return build_media_service()
+
+
+def get_chat_service(
+    conversations: Annotated[ConversationRepository, Depends(get_conversation_repository)],
+    messages: Annotated[MessageRepository, Depends(get_message_repository)],
+    users: Annotated[UserRepository, Depends(get_user_repository)],
+    presence: Annotated[PresenceService, Depends(get_presence_service)],
+    media: Annotated[MediaService, Depends(get_media_service)],
+) -> ChatService:
+    return ChatService(
+        conversations=conversations,
+        messages=messages,
+        users=users,
+        presence=presence,
+        presign=media.presign,
+    )
 
 
 def _extract_bearer_token(authorization: str | None) -> str:

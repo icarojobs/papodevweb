@@ -1,0 +1,94 @@
+- generic [ref=e1]:
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - button [ref=e196] [cursor=pointer]:
+          - img [ref=e29]
+        - button [ref=e197] [cursor=pointer]:
+          - img [ref=e33]
+        - button [ref=e198] [cursor=pointer]:
+          - img [ref=e43]
+        - button [ref=e199] [cursor=pointer]:
+          - img [ref=e46]
+        - button [ref=e200] [cursor=pointer]:
+          - img [ref=e51]
+      - generic [ref=e62]:
+        - button [ref=e201] [cursor=pointer]:
+          - img [ref=e64]
+        - button [ref=e202] [cursor=pointer]:
+          - img [ref=e203]: UT
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - paragraph [ref=e73]: Papo Dev Web
+        - generic [ref=e74]:
+          - button [ref=e204] [cursor=pointer]:
+            - img [ref=e76]
+          - button [ref=e205] [cursor=pointer]:
+            - img [ref=e79]
+      - generic [ref=e82]:
+        - generic:
+          - img
+        - textbox [ref=e206]:
+          - /placeholder: Pesquisar ou começar uma nova conversa
+      - generic [ref=e84]:
+        - button [pressed] [ref=e207] [cursor=pointer]: Tudo
+        - button [ref=e208] [cursor=pointer]: Não lidas
+        - button [ref=e209] [cursor=pointer]: Favoritas
+        - button [ref=e210] [cursor=pointer]: Grupos
+      - generic [ref=e133] [cursor=pointer]:
+        - img [ref=e211]: AE
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - paragraph [ref=e139]: Alice E2E
+            - paragraph [ref=e140]: 23:01
+          - generic [ref=e142]: 📷 Foto
+    - generic [ref=e143]:
+      - generic [ref=e144]:
+        - generic [ref=e145]:
+          - img [ref=e212]: AE
+          - generic [ref=e148]:
+            - paragraph [ref=e149]: Alice E2E
+            - paragraph [ref=e150]: visto por último 19:20 às 19:20
+        - generic [ref=e151]:
+          - button [ref=e213] [cursor=pointer]:
+            - img [ref=e153]
+          - button [ref=e214] [cursor=pointer]:
+            - img [ref=e156]
+          - button [ref=e215] [cursor=pointer]:
+            - img [ref=e160]
+          - button [ref=e216] [cursor=pointer]:
+            - img [ref=e163]
+          - button [ref=e217] [cursor=pointer]:
+            - img [ref=e167]
+      - generic [ref=e184]:
+        - img [ref=e218]
+        - generic [ref=e186]:
+          - paragraph [ref=e187]: 20:01
+          - img [ref=e219]
+      - generic [ref=e170]:
+        - button [ref=e220] [cursor=pointer]:
+          - img [ref=e172]
+        - button [ref=e221] [cursor=pointer]:
+          - img [ref=e176]
+        - textbox [ref=e222]:
+          - /placeholder: Digite uma mensagem
+        - button [ref=e223] [cursor=pointer]:
+          - img [ref=e180]
+  - dialog "Excluir conversa?" [ref=e226]:
+    - banner [ref=e227]: Excluir conversa?
+    - generic [ref=e228]:
+      - paragraph [ref=e229]: Esta ação não pode ser desfeita para a conversa com Alice E2E.
+      - radiogroup [ref=e230]:
+        - generic [ref=e231]:
+          - generic [ref=e232] [cursor=pointer]:
+            - radio "Excluir só para mim" [checked] [ref=e233]
+            - paragraph [ref=e236]: Excluir só para mim
+          - generic [ref=e237] [cursor=pointer]:
+            - radio "Excluir para todos" [ref=e238]
+            - paragraph [ref=e241]: Excluir para todos
+      - generic [ref=e242] [cursor=pointer]:
+        - checkbox "Apagar também as mídias (fotos, arquivos e áudios)" [ref=e243]
+        - paragraph [ref=e246]: Apagar também as mídias (fotos, arquivos e áudios)
+    - contentinfo [ref=e247]:
+      - button "Cancelar" [ref=e248] [cursor=pointer]
+      - button "Excluir" [active] [ref=e249] [cursor=pointer]

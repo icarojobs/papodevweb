@@ -1,0 +1,23 @@
+- generic [ref=e4]:
+  - heading "Termos de Uso — Papo Dev Web" [level=2] [ref=e5]
+  - paragraph [ref=e6]: Ao usar a plataforma, você concorda com os termos abaixo.
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - heading "1. Uso da plataforma" [level=2] [ref=e9]
+      - paragraph [ref=e10]: O Papo Dev Web é uma plataforma de mensagens para fins de estudo e demonstração. Você é responsável pelo conteúdo que envia e por manter suas credenciais seguras.
+    - generic [ref=e11]:
+      - heading "2. Retenção de histórico e mídias" [level=2] [ref=e12]
+      - paragraph [ref=e13]:
+        - text: Para preservar privacidade e otimizar recursos, mantemos de forma global apenas os últimos
+        - strong [ref=e14]: 7 dias
+        - text: "de histórico. Após esse período, os dados são excluídos automaticamente:"
+      - list [ref=e15]:
+        - listitem [ref=e16]: Mensagens com mais de 7 dias são apagadas permanentemente.
+        - listitem [ref=e17]: Objetos/mídias (imagens, vídeos, áudios e documentos) dessas mensagens são removidos do armazenamento.
+        - listitem [ref=e18]: Conversas sem atividade por mais de 7 dias são excluídas por completo.
+      - paragraph [ref=e19]: A limpeza é executada automaticamente todos os dias às 00:01. A exclusão é irreversível.
+    - generic [ref=e20]:
+      - heading "3. Privacidade" [level=2] [ref=e21]
+      - paragraph [ref=e22]: Coletamos apenas os dados necessários para o funcionamento do serviço (cadastro e mensagens). Não compartilhamos seus dados com terceiros.
+  - link "← Voltar para o início" [ref=e24] [cursor=pointer]:
+    - /url: /login

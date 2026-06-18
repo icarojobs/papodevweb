@@ -1,0 +1,76 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation [ref=e6]:
+      - img "Papo Dev Web" [ref=e8]
+      - link "Abrir o chat" [ref=e10] [cursor=pointer]:
+        - /url: /chat
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: 🚀 Grátis e open source
+      - heading "Toda a sua comunicação. Um só lugar." [level=1] [ref=e14]
+      - paragraph [ref=e15]: O melhor do WhatsApp, Slack, Telegram e Discord reunido em uma única plataforma — pensada para profissionais de tecnologia. 100% gratuita e de código aberto.
+      - generic [ref=e16]:
+        - link "Abrir o chat" [ref=e17] [cursor=pointer]:
+          - /url: /chat
+        - link "Ir para conversas" [ref=e18] [cursor=pointer]:
+          - /url: /chat
+    - generic [ref=e20]:
+      - heading "O melhor de cada mundo" [level=2] [ref=e21]
+      - paragraph [ref=e22]: Reunimos as melhores ideias dos apps que você já conhece — sem precisar de quatro ferramentas diferentes.
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - img [ref=e25]
+          - heading "WhatsApp" [level=3] [ref=e27]
+          - paragraph [ref=e28]: simplicidade e mensagens em tempo real
+        - generic [ref=e29]:
+          - img [ref=e30]
+          - heading "Slack" [level=3] [ref=e32]
+          - paragraph [ref=e33]: organização por times e produtividade
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - heading "Telegram" [level=3] [ref=e37]
+          - paragraph [ref=e38]: velocidade, canais e mídia leve
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - heading "Discord" [level=3] [ref=e42]
+          - paragraph [ref=e43]: comunidades e presença em tempo real
+    - generic [ref=e44]:
+      - heading "Recursos que você espera — e mais" [level=2] [ref=e45]
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - img [ref=e48]
+          - heading "Tempo real" [level=3] [ref=e50]
+          - paragraph [ref=e51]: Mensagens, recibos de entrega/leitura, presença e digitação instantâneos via WebSocket.
+        - generic [ref=e52]:
+          - img [ref=e53]
+          - heading "Diretas e grupos" [level=3] [ref=e58]
+          - paragraph [ref=e59]: Converse 1-a-1 ou crie grupos. Encontre pessoas por nome ou e-mail.
+        - generic [ref=e60]:
+          - img [ref=e61]
+          - heading "Busca e filtros" [level=3] [ref=e64]
+          - paragraph [ref=e65]: Filtre por não lidas, favoritas e grupos. Encontre conversas e contatos num só campo.
+        - generic [ref=e66]:
+          - img [ref=e67]
+          - heading "Privacidade" [level=3] [ref=e70]
+          - paragraph [ref=e71]: Apague mensagens para você ou para todos. Controle total sobre o seu histórico.
+        - generic [ref=e72]:
+          - img [ref=e73]
+          - heading "Retenção inteligente" [level=3] [ref=e75]
+          - paragraph [ref=e76]: Histórico e mídias mantidos por 7 dias e expurgados automaticamente.
+        - generic [ref=e77]:
+          - img [ref=e78]
+          - heading "100% open source" [level=3] [ref=e80]
+          - paragraph [ref=e81]: Gratuito e de código aberto. Construído para a comunidade de tecnologia.
+    - generic [ref=e83]:
+      - heading "Pronto para conversar?" [level=2] [ref=e84]
+      - paragraph [ref=e85]: Crie sua conta gratuita em segundos e comece a usar agora mesmo.
+      - link "Abrir o chat" [ref=e86] [cursor=pointer]:
+        - /url: /chat
+  - contentinfo [ref=e87]:
+    - generic [ref=e89]:
+      - paragraph [ref=e90]: © Papo Dev Web — gratuito e open source.
+      - generic [ref=e91]:
+        - link "Termos de Uso" [ref=e92] [cursor=pointer]:
+          - /url: /termos
+        - link "Entrar" [ref=e93] [cursor=pointer]:
+          - /url: /login

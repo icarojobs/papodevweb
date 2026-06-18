@@ -1,7 +1,19 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+// HTTPS local: usa o certificado self-signed montado em /certs (ver `make certs`).
+// Cai para HTTP automaticamente quando os certificados não existem (build/testes).
+function httpsConfig() {
+  const certFile = process.env.SSL_CERT_FILE ?? '/certs/cert.pem'
+  const keyFile = process.env.SSL_KEY_FILE ?? '/certs/key.pem'
+  if (existsSync(certFile) && existsSync(keyFile)) {
+    return { cert: readFileSync(certFile), key: readFileSync(keyFile) }
+  }
+  return undefined
+}
 
 export default defineConfig({
   plugins: [react()],
@@ -12,6 +24,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    https: httpsConfig(),
     // Evita reloads desnecessários ao observar artefatos gerados.
     watch: { ignored: ['**/coverage/**', '**/htmlcov/**', '**/.venv/**'] },
   },

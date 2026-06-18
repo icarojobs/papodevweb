@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /$
+Allow: /termos
+Disallow: /chat
+Disallow: /login
+Disallow: /cadastro
+Disallow: /esqueci-senha
+Disallow: /redefinir-senha
+Disallow: /confirmar-email
+
+Sitemap: https://papodevweb.local/sitemap.xml

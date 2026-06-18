@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  CloseButton,
   Flex,
   Icon,
   IconButton,
@@ -9,29 +7,30 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiSearch } from 'react-icons/fi'
-import { HiOutlineBellSlash } from 'react-icons/hi2'
-import { MdOutlineArchive } from 'react-icons/md'
-import { TbPinnedFilled } from 'react-icons/tb'
 import { LuMessageSquarePlus } from 'react-icons/lu'
+import { TbStarFilled } from 'react-icons/tb'
 
+import { CHAT_FILTERS } from '@/lib/constants'
+import { filterConversations, useChatStore } from '@/store/chat.store'
+import type { ChatFilter, Conversation } from '@/types/chat'
 import { ListRow } from '../components/ListRow'
-import { CONVERSATIONS, type Conversation } from '../data/mock'
+import { NewChatModal } from '../conversation/NewChatModal'
+import { formatListTime } from '../format'
 import { WA } from '../ui'
 
-const FILTERS = ['All', 'Unread 32', 'Favourites 1', 'Groups 13'] as const
-
-function UnreadBadge({ count, muted }: { count: number; muted?: boolean }) {
+function UnreadBadge({ count }: { count: number }) {
   return (
     <Flex
       minW="20px"
       h="20px"
       px="6px"
       rounded="full"
-      bg={muted ? WA.textMuted : WA.unread}
+      bg={WA.unread}
       color="white"
       fontSize="12px"
       fontWeight="medium"
@@ -43,108 +42,155 @@ function UnreadBadge({ count, muted }: { count: number; muted?: boolean }) {
   )
 }
 
-interface ChatsPanelProps {
-  selectedId?: string
-  onSelectChat: (conversation: Conversation) => void
+function filterCount(conversations: Conversation[], key: ChatFilter): number {
+  if (key === 'unread') return conversations.filter((c) => c.unread > 0).length
+  if (key === 'favourites') return conversations.filter((c) => c.favourite).length
+  if (key === 'groups') return conversations.filter((c) => c.type === 'group').length
+  return 0
 }
 
-export function ChatsPanel({ selectedId, onSelectChat }: ChatsPanelProps) {
-  const [activeFilter, setActiveFilter] = useState('All')
-  const [bannerVisible, setBannerVisible] = useState(true)
+export function ChatsPanel() {
+  const conversations = useChatStore((s) => s.conversations)
+  const filter = useChatStore((s) => s.filter)
+  const search = useChatStore((s) => s.search)
+  const activeId = useChatStore((s) => s.activeConversationId)
+  const userResults = useChatStore((s) => s.userResults)
+  const setFilter = useChatStore((s) => s.setFilter)
+  const setSearch = useChatStore((s) => s.setSearch)
+  const searchUsers = useChatStore((s) => s.searchUsers)
+  const selectConversation = useChatStore((s) => s.selectConversation)
+  const startConversation = useChatStore((s) => s.startConversation)
+  const newChat = useDisclosure()
+
+  const visible = filterConversations(conversations, filter, search)
+  const term = search.trim()
+
+  // Busca usuários cadastrados (debounce) para iniciar novas conversas.
+  useEffect(() => {
+    const handle = setTimeout(() => searchUsers(search), 250)
+    return () => clearTimeout(handle)
+  }, [search, searchUsers])
 
   return (
     <Flex direction="column" h="100%" bg={WA.panelBg}>
-      {/* Header */}
       <Flex align="center" justify="space-between" px={5} py={3}>
         <Text fontSize="2xl" fontWeight="bold" color={WA.greenTitle}>
-          WhatsApp
+          Papo Dev Web
         </Text>
         <Flex align="center" gap={1}>
-          <IconButton aria-label="Nova conversa" icon={<Icon as={LuMessageSquarePlus} boxSize={5} />} variant="ghost" rounded="full" color={WA.textSecondary} />
-          <IconButton aria-label="Menu" icon={<Icon as={BsThreeDotsVertical} boxSize={5} />} variant="ghost" rounded="full" color={WA.textSecondary} />
+          <IconButton
+            aria-label="Nova conversa"
+            icon={<Icon as={LuMessageSquarePlus} boxSize={5} />}
+            variant="ghost"
+            rounded="full"
+            color={WA.textSecondary}
+            onClick={newChat.onOpen}
+          />
+          <IconButton
+            aria-label="Menu"
+            icon={<Icon as={BsThreeDotsVertical} boxSize={5} />}
+            variant="ghost"
+            rounded="full"
+            color={WA.textSecondary}
+          />
         </Flex>
       </Flex>
 
-      {/* Search */}
       <Box px={3} pb={2}>
         <InputGroup size="sm">
           <InputLeftElement pointerEvents="none" h="35px">
             <Icon as={FiSearch} color={WA.textSecondary} />
           </InputLeftElement>
-          <Input placeholder="Search or start a new chat" bg={WA.searchBg} border="none" rounded="lg" h="35px" pl="40px" _focus={{ bg: WA.searchBg, boxShadow: 'none' }} />
+          <Input
+            aria-label="Buscar conversas"
+            placeholder="Pesquisar ou começar uma nova conversa"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            bg={WA.searchBg}
+            border="none"
+            rounded="lg"
+            h="35px"
+            pl="40px"
+            _focus={{ bg: WA.searchBg, boxShadow: 'none' }}
+          />
         </InputGroup>
       </Box>
 
-      {/* Filtros */}
       <Flex px={3} pb={2} gap={2} wrap="nowrap" overflowX="auto">
-        {FILTERS.map((f) => {
-          const isActive = f === activeFilter
+        {CHAT_FILTERS.map(({ key, label }) => {
+          const isActive = key === filter
+          const count = filterCount(conversations, key)
           return (
-            <Button
-              key={f}
-              size="xs"
+            <Box
+              as="button"
+              key={key}
+              aria-pressed={isActive}
+              flexShrink={0}
               rounded="full"
               px={3}
               h="30px"
-              flexShrink={0}
-              fontWeight="normal"
+              fontSize="sm"
               bg={isActive ? '#d9fdd3' : WA.searchBg}
               color={isActive ? WA.greenDark : WA.textSecondary}
               _hover={{ bg: isActive ? '#cdf5c5' : '#e6e9eb' }}
-              onClick={() => setActiveFilter(f)}
+              onClick={() => setFilter(key)}
             >
-              {f}
-            </Button>
+              {label}
+              {count > 0 ? ` ${count}` : ''}
+            </Box>
           )
         })}
       </Flex>
 
       <Box overflowY="auto" flex="1">
-        {/* Banner de notificações */}
-        {bannerVisible && (
-          <Flex align="center" gap={3} mx={3} my={2} px={3} py={2} bg="#e7f8ec" rounded="lg">
-            <Icon as={HiOutlineBellSlash} boxSize={5} color={WA.greenDark} />
-            <Text fontSize="sm" color={WA.textPrimary} flex="1">
-              Message notifications are off.{' '}
-              <Text as="span" color={WA.greenDark} fontWeight="medium" cursor="pointer">
-                Turn on
-              </Text>
-            </Text>
-            <CloseButton size="sm" onClick={() => setBannerVisible(false)} />
-          </Flex>
+        {visible.length === 0 && userResults.length === 0 && (
+          <Text fontSize="sm" color={WA.textSecondary} textAlign="center" py={6}>
+            {term ? 'Nada encontrado.' : 'Nenhuma conversa por aqui ainda.'}
+          </Text>
         )}
-
-        {/* Arquivadas */}
-        <Flex align="center" gap={4} px={5} py={3} cursor="pointer" _hover={{ bg: WA.hover }}>
-          <Icon as={MdOutlineArchive} boxSize={5} color={WA.green} />
-          <Text fontSize="sm" color={WA.textPrimary} flex="1">
-            Archived
+        {term && (
+          <Text px={5} pt={3} pb={1} fontSize="sm" color={WA.green} fontWeight="medium">
+            Conversas
           </Text>
-          <Text fontSize="xs" color={WA.textSecondary}>
-            19
-          </Text>
-        </Flex>
-
-        {/* Lista de conversas */}
-        {CONVERSATIONS.map((c) => (
+        )}
+        {visible.map((conversation) => (
           <ListRow
-            key={c.id}
-            name={c.name}
-            preview={c.preview}
-            time={c.time}
-            timeColor={c.unread ? WA.green : undefined}
-            active={c.id === selectedId}
-            onClick={() => onSelectChat(c)}
+            key={conversation.id}
+            name={conversation.name}
+            preview={conversation.last_message?.text ?? 'Toque para conversar'}
+            time={formatListTime(conversation.last_message?.created_at ?? conversation.updated_at)}
+            timeColor={conversation.unread > 0 ? WA.green : undefined}
+            active={conversation.id === activeId}
+            onClick={() => selectConversation(conversation.id)}
             trailing={
               <Flex align="center" gap={1} flexShrink={0}>
-                {c.muted && <Icon as={HiOutlineBellSlash} boxSize={4} color={WA.textMuted} />}
-                {c.pinned && <Icon as={TbPinnedFilled} boxSize={4} color={WA.textMuted} />}
-                {c.unread ? <UnreadBadge count={c.unread} muted={c.muted} /> : null}
+                {conversation.favourite && (
+                  <Icon as={TbStarFilled} boxSize={4} color={WA.textMuted} aria-label="Favorita" />
+                )}
+                {conversation.unread > 0 ? <UnreadBadge count={conversation.unread} /> : null}
               </Flex>
             }
           />
         ))}
+
+        {term && userResults.length > 0 && (
+          <>
+            <Text px={5} pt={3} pb={1} fontSize="sm" color={WA.green} fontWeight="medium">
+              Contatos
+            </Text>
+            {userResults.map((user) => (
+              <ListRow
+                key={user.id}
+                name={user.full_name}
+                preview={user.email}
+                onClick={() => startConversation(user.id)}
+              />
+            ))}
+          </>
+        )}
       </Box>
+
+      <NewChatModal isOpen={newChat.isOpen} onClose={newChat.onClose} />
     </Flex>
   )
 }

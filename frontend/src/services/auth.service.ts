@@ -25,6 +25,12 @@ export const authService = {
     return data
   },
 
+  // Renova a sessão a partir do cookie httpOnly de refresh (persiste após F5).
+  async refresh(): Promise<TokenResponse> {
+    const { data } = await api.post<TokenResponse>('/auth/refresh')
+    return data
+  },
+
   async me(): Promise<UserPublic> {
     const { data } = await api.get<UserPublic>('/auth/me')
     return data

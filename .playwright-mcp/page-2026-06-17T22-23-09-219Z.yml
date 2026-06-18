@@ -1,0 +1,63 @@
+- generic [ref=e1]:
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - button [ref=e132] [cursor=pointer]:
+          - img [ref=e29]
+        - button [ref=e133] [cursor=pointer]:
+          - img [ref=e33]
+        - button [ref=e134] [cursor=pointer]:
+          - img [ref=e43]
+        - button [ref=e135] [cursor=pointer]:
+          - img [ref=e46]
+        - button [ref=e136] [cursor=pointer]:
+          - img [ref=e51]
+      - generic [ref=e62]:
+        - button [ref=e137] [cursor=pointer]:
+          - img [ref=e64]
+        - button [ref=e138] [cursor=pointer]:
+          - img [ref=e139]: UT
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - paragraph [ref=e73]: Papo Dev Web
+        - generic [ref=e74]:
+          - button [ref=e140] [cursor=pointer]:
+            - img [ref=e76]
+          - button [ref=e141] [cursor=pointer]:
+            - img [ref=e79]
+      - generic [ref=e82]:
+        - generic:
+          - img
+        - textbox [ref=e142]:
+          - /placeholder: Pesquisar ou começar uma nova conversa
+      - generic [ref=e84]:
+        - button [pressed] [ref=e143] [cursor=pointer]: Tudo
+        - button [ref=e144] [cursor=pointer]: Não lidas
+        - button [ref=e145] [cursor=pointer]: Favoritas
+        - button [ref=e146] [cursor=pointer]: Grupos
+      - paragraph [ref=e90]: Nenhuma conversa por aqui ainda.
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - img [ref=e96]
+        - paragraph [ref=e101]: Download WhatsApp for Windows
+        - paragraph [ref=e102]: Get extra features like voice and video calling, screen sharing and more.
+        - button [ref=e147] [cursor=pointer]: Download
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - img [ref=e107] [cursor=pointer]
+          - paragraph [ref=e110]: Send document
+        - generic [ref=e111]:
+          - img [ref=e113] [cursor=pointer]
+          - paragraph [ref=e116]: Add contact
+        - generic [ref=e117]:
+          - img [ref=e120] [cursor=pointer]
+          - paragraph [ref=e131]: Ask Meta AI
+  - dialog "Nova conversa" [ref=e150]:
+    - banner [ref=e151]: Nova conversa
+    - button "Close" [ref=e152] [cursor=pointer]:
+      - img [ref=e153]
+    - generic [ref=e155]:
+      - generic [ref=e156] [cursor=pointer]:
+        - img [ref=e157]
+        - paragraph [ref=e159]: Novo grupo
+      - textbox "Buscar por nome ou e-mail" [active] [ref=e160]

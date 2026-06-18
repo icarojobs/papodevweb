@@ -1,0 +1,53 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - button "Conversas" [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - button "Status" [ref=e10] [cursor=pointer]:
+        - img [ref=e11]
+      - button "Canais" [ref=e20] [cursor=pointer]:
+        - img [ref=e21]
+      - button "Comunidades" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+      - button "Meta AI" [ref=e27] [cursor=pointer]:
+        - img [ref=e29]
+    - generic [ref=e40]:
+      - button "Configurações" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+      - button "Perfil" [ref=e45] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e47]: UT
+  - generic [ref=e49]:
+    - generic [ref=e50]:
+      - paragraph [ref=e51]: Papo Dev Web
+      - generic [ref=e52]:
+        - button "Nova conversa" [ref=e53] [cursor=pointer]:
+          - img [ref=e54]
+        - button "Menu" [ref=e56] [cursor=pointer]:
+          - img [ref=e57]
+    - generic [ref=e60]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e61]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e62]:
+      - button "Tudo" [pressed] [ref=e63] [cursor=pointer]
+      - button "Não lidas" [ref=e64] [cursor=pointer]
+      - button "Favoritas" [ref=e65] [cursor=pointer]
+      - button "Grupos" [ref=e66] [cursor=pointer]
+    - paragraph [ref=e68]: Nenhuma conversa por aqui ainda.
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - img [ref=e74]
+      - paragraph [ref=e79]: Download WhatsApp for Windows
+      - paragraph [ref=e80]: Get extra features like voice and video calling, screen sharing and more.
+      - button "Download" [ref=e81] [cursor=pointer]
+    - generic [ref=e82]:
+      - generic [ref=e83]:
+        - img [ref=e85] [cursor=pointer]
+        - paragraph [ref=e88]: Send document
+      - generic [ref=e89]:
+        - img [ref=e91] [cursor=pointer]
+        - paragraph [ref=e94]: Add contact
+      - generic [ref=e95]:
+        - img [ref=e98] [cursor=pointer]
+        - paragraph [ref=e109]: Ask Meta AI

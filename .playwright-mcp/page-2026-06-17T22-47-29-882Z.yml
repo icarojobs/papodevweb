@@ -1,0 +1,77 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e45] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e67] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e69]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e78] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e83]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e85] [cursor=pointer]
+      - button "Não lidas" [ref=e86] [cursor=pointer]
+      - button "Favoritas" [ref=e87] [cursor=pointer]
+      - button "Grupos" [ref=e88] [cursor=pointer]
+    - generic [ref=e89]:
+      - generic [ref=e90] [cursor=pointer]:
+        - img "Fulano de Tal" [ref=e93]: FT
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - paragraph [ref=e96]: Fulano de Tal
+            - paragraph [ref=e97]: 22:30
+          - generic [ref=e99]: Toque para conversar
+      - generic [ref=e100] [cursor=pointer]:
+        - img "Alice E2E" [ref=e103]: AE
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - paragraph [ref=e106]: Alice E2E
+            - paragraph [ref=e107]: 22:29
+          - generic [ref=e109]: 🎤 Áudio
+  - generic [ref=e151]:
+    - generic [ref=e152]:
+      - generic [ref=e153]:
+        - img "Fulano de Tal" [ref=e155]: FT
+        - generic [ref=e156]:
+          - paragraph [ref=e157]: Fulano de Tal
+          - paragraph [ref=e158]: visto por último 19:29 às 19:29
+      - generic [ref=e159]:
+        - button "Favoritar" [ref=e160] [cursor=pointer]:
+          - img [ref=e161]
+        - button "Chamada de vídeo" [ref=e163] [cursor=pointer]:
+          - img [ref=e164]
+        - button "Mídia" [ref=e167] [cursor=pointer]:
+          - img [ref=e168]
+        - button "Pesquisar" [ref=e170] [cursor=pointer]:
+          - img [ref=e171]
+        - button "Menu" [ref=e174] [cursor=pointer]:
+          - img [ref=e175]
+    - generic [ref=e178]:
+      - button "Emoji" [ref=e179] [cursor=pointer]:
+        - img [ref=e180]
+      - button "Anexar" [ref=e183] [cursor=pointer]:
+        - img [ref=e184]
+      - textbox "Digite uma mensagem" [ref=e186]
+      - button "Gravar áudio" [ref=e187] [cursor=pointer]:
+        - img [ref=e188]

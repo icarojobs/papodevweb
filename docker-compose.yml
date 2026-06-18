@@ -121,6 +121,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./certs:/certs:ro
     depends_on:
       mongodb:
         condition: service_healthy
@@ -132,7 +133,19 @@ services:
         condition: service_healthy
       mailpit:
         condition: service_started
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    # HTTPS local com certificado self-signed (ver `make certs`).
+    command:
+      - uvicorn
+      - app.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --reload
+      - --ssl-keyfile
+      - /certs/key.pem
+      - --ssl-certfile
+      - /certs/cert.pem
     networks:
       - papodevweb
 
@@ -149,6 +162,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - ./certs:/certs:ro
     depends_on:
       - backend
     command: ["pnpm", "dev", "--host", "0.0.0.0"]

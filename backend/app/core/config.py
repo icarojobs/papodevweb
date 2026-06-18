@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     minio_root_password: str = "minioadmin"
     minio_bucket: str = "papodevweb-media"
     minio_use_ssl: bool = False
+    # Região fixa evita lookup de região (GetBucketLocation) ao assinar URLs com
+    # o endpoint público, que não é alcançável de dentro do contêiner.
+    minio_region: str = "us-east-1"
 
     # Segurança / JWT
     jwt_secret_key: str = "troque-este-segredo-em-producao"
@@ -41,6 +44,9 @@ class Settings(BaseSettings):
 
     # CORS
     frontend_origin: str = "http://localhost:5173"
+
+    # Agendador (timezone do job diário de retenção)
+    scheduler_timezone: str = "America/Sao_Paulo"
 
     @property
     def is_production(self) -> bool:

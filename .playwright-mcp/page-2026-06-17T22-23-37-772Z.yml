@@ -1,0 +1,74 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e169] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e170] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e171] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e172] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e173] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e174] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e175] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e176]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e177] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e178] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e179]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e180] [cursor=pointer]
+      - button "Não lidas" [ref=e181] [cursor=pointer]
+      - button "Favoritas" [ref=e182] [cursor=pointer]
+      - button "Grupos" [ref=e183] [cursor=pointer]
+    - generic [ref=e184] [cursor=pointer]:
+      - img "Alice E2E" [ref=e187]: AE
+      - generic [ref=e188]:
+        - generic [ref=e189]:
+          - paragraph [ref=e190]: Alice E2E
+          - paragraph [ref=e191]: 22:23
+        - generic [ref=e193]: Olá, Alice! Mensagem pela interface 🚀
+  - generic [ref=e194]:
+    - generic [ref=e195]:
+      - generic [ref=e196]:
+        - img "Alice E2E" [ref=e198]: AE
+        - generic [ref=e199]:
+          - paragraph [ref=e200]: Alice E2E
+          - paragraph [ref=e201]: visto por último 19:20 às 19:20
+      - generic [ref=e202]:
+        - button "Favoritar" [ref=e203] [cursor=pointer]:
+          - img [ref=e204]
+        - button "Chamada de vídeo" [ref=e206] [cursor=pointer]:
+          - img [ref=e207]
+        - button "Mídia" [ref=e210] [cursor=pointer]:
+          - img [ref=e211]
+        - button "Pesquisar" [ref=e213] [cursor=pointer]:
+          - img [ref=e214]
+        - button "Menu" [ref=e217] [cursor=pointer]:
+          - img [ref=e218]
+    - generic [ref=e235]:
+      - paragraph [ref=e236]: Olá, Alice! Mensagem pela interface 🚀
+      - generic [ref=e237]:
+        - paragraph [ref=e238]: 19:23
+        - img "Enviada" [ref=e239]
+    - generic [ref=e221]:
+      - button "Emoji" [ref=e222] [cursor=pointer]:
+        - img [ref=e223]
+      - button "Anexar" [ref=e226] [cursor=pointer]:
+        - img [ref=e227]
+      - textbox "Digite uma mensagem" [active] [ref=e229]
+      - button "Gravar áudio" [ref=e230] [cursor=pointer]:
+        - img [ref=e241]

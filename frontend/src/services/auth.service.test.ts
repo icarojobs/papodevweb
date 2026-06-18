@@ -47,6 +47,13 @@ describe('authService', () => {
     expect(result).toEqual(tokenResponse)
   })
 
+  it('refresh chama POST /auth/refresh', async () => {
+    vi.mocked(api.post).mockResolvedValue({ data: tokenResponse })
+    const result = await authService.refresh()
+    expect(api.post).toHaveBeenCalledWith('/auth/refresh')
+    expect(result).toEqual(tokenResponse)
+  })
+
   it('me chama GET /auth/me', async () => {
     vi.mocked(api.get).mockResolvedValue({ data: tokenResponse.user })
     const result = await authService.me()

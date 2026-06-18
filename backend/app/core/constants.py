@@ -8,6 +8,8 @@ from enum import StrEnum
 
 # ----- Coleções do MongoDB -----
 USERS_COLLECTION = "users"
+CONVERSATIONS_COLLECTION = "conversations"
+MESSAGES_COLLECTION = "messages"
 
 # ----- Autenticação / JWT -----
 JWT_ALGORITHM = "HS256"
@@ -59,3 +61,104 @@ class TokenType(StrEnum):
     REFRESH = "refresh"
     RESET = "reset"
     VERIFY = "verify"
+
+
+# ----- Chat: regras e limites -----
+MIN_SEARCH_QUERY_LENGTH = 1
+MAX_MESSAGE_LENGTH = 4096
+MAX_GROUP_NAME_LENGTH = 100
+MIN_GROUP_NAME_LENGTH = 1
+DEFAULT_MESSAGE_PAGE_SIZE = 50
+MAX_MESSAGE_PAGE_SIZE = 100
+MAX_SEARCH_RESULTS = 20
+
+# Limites de upload por categoria de mídia.
+_MIB = 1024 * 1024
+MAX_IMAGE_BYTES = 2 * _MIB
+MAX_DOCUMENT_BYTES = 2 * _MIB
+MAX_VIDEO_BYTES = 50 * _MIB
+MAX_AUDIO_BYTES = 16 * _MIB
+# Teto absoluto de upload (maior categoria) — usado como limite de borda.
+MAX_MEDIA_BYTES = MAX_VIDEO_BYTES
+PRESIGNED_URL_EXPIRES_SECONDS = 7 * 86_400
+APPLICATION_OCTET_STREAM = "application/octet-stream"
+
+# ----- Chat: mensagens de erro (pt-br) -----
+ERR_CONVERSATION_NOT_FOUND = "Conversa não encontrada."
+ERR_NOT_A_PARTICIPANT = "Você não participa desta conversa."
+ERR_RECIPIENT_NOT_FOUND = "Destinatário não encontrado."
+ERR_EMPTY_MESSAGE = "A mensagem não pode estar vazia."
+ERR_MEDIA_TOO_LARGE = "Arquivo excede o tamanho máximo permitido para o seu tipo."
+ERR_UNSUPPORTED_MEDIA = "Tipo de mídia não suportado."
+ERR_GROUP_NEEDS_MEMBERS = "Um grupo precisa de pelo menos um participante."
+ERR_CANNOT_LEAVE_DIRECT = "Conversas diretas não podem ser deixadas; exclua-as."
+ERR_MESSAGE_NOT_FOUND = "Mensagem não encontrada."
+ERR_NOT_MESSAGE_SENDER = "Só é possível apagar para todos as mensagens que você enviou."
+
+# Texto exibido no lugar de uma mensagem apagada para todos (tombstone).
+MSG_MESSAGE_DELETED = "🚫 Esta mensagem foi apagada"
+
+
+class ConversationType(StrEnum):
+    """Tipos de conversa suportados."""
+
+    DIRECT = "direct"
+    GROUP = "group"
+
+
+class MessageType(StrEnum):
+    """Tipos de conteúdo de uma mensagem."""
+
+    TEXT = "text"
+    IMAGE = "image"
+    VIDEO = "video"
+    DOCUMENT = "document"
+    AUDIO = "audio"
+
+
+class DeleteScope(StrEnum):
+    """Escopo da exclusão de conversa."""
+
+    ME = "me"
+    EVERYONE = "everyone"
+
+
+class MessageStatus(StrEnum):
+    """Estado de entrega de uma mensagem, na ótica de quem enviou."""
+
+    SENT = "sent"
+    DELIVERED = "delivered"
+    READ = "read"
+
+
+class SocketEvent(StrEnum):
+    """Nomes dos eventos Socket.IO (cliente <-> servidor)."""
+
+    # cliente -> servidor
+    CONVERSATION_OPEN = "conversation:open"
+    MESSAGE_SEND = "message:send"
+    MESSAGE_READ = "message:read"
+    MESSAGE_DELETE = "message:delete"
+    TYPING = "typing"
+    # servidor -> cliente
+    MESSAGE_NEW = "message:new"
+    MESSAGE_STATUS = "message:status"
+    MESSAGE_DELETED = "message:deleted"
+    CONVERSATION_UPDATED = "conversation:updated"
+    PRESENCE = "presence"
+
+
+# Prefixos das salas (rooms) do Socket.IO.
+ROOM_USER_PREFIX = "user:"
+ROOM_CONVERSATION_PREFIX = "conv:"
+
+# ----- Presença (Redis) -----
+PRESENCE_ONLINE_SET = "presence:online"
+PRESENCE_LAST_SEEN_HASH = "presence:last_seen"
+
+# ----- Retenção de histórico (purge diário) -----
+# Mantém globalmente apenas os últimos 7 dias de conversas/mensagens/mídias.
+RETENTION_DAYS = 7
+# Horário do job diário de expurgo (00:01).
+RETENTION_CRON_HOUR = 0
+RETENTION_CRON_MINUTE = 1

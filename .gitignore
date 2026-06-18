@@ -19,5 +19,9 @@ frontend/coverage/
 frontend/.vite/
 *.tsbuildinfo
 
+# Certificados TLS de desenvolvimento (gerados localmente via `make certs`).
+# Nunca commitar chaves privadas.
+certs/*.pem
+
 # Editores / SO
 .DS_Store

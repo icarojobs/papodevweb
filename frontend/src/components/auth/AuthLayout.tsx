@@ -1,5 +1,8 @@
-import { Box, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, Heading, Image, Link, Text, VStack } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+
+import { ROUTES } from '@/lib/constants'
 
 interface AuthLayoutProps {
   title: string
@@ -31,6 +34,11 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
             {footer}
           </Box>
         </Box>
+        <Text mt={4} textAlign="center" fontSize="xs" color="whiteAlpha.600">
+          <Link as={RouterLink} to={ROUTES.TERMS} color="whiteAlpha.700">
+            Termos de Uso
+          </Link>
+        </Text>
       </Box>
     </Flex>
   )

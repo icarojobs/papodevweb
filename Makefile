@@ -3,7 +3,7 @@
 COMPOSE := docker compose
 
 .DEFAULT_GOAL := help
-.PHONY: help setup up down ps logs build seed
+.PHONY: help setup certs up down ps logs build seed
 
 help: ## Lista os comandos disponíveis
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -17,7 +17,10 @@ setup: ## Cria o arquivo .env a partir do .env.example (se ainda não existir)
 		echo "Arquivo .env já existe — nenhuma alteração feita."; \
 	fi
 
-up: ## Sobe todos os serviços em segundo plano
+certs: ## Gera o certificado TLS self-signed para HTTPS local (em ./certs)
+	@./scripts/generate-certs.sh
+
+up: certs ## Gera os certificados (se faltarem) e sobe todos os serviços
 	$(COMPOSE) up -d
 
 down: ## Para e remove os contêineres

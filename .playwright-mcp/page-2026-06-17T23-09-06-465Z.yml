@@ -1,0 +1,69 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e45] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e67] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e69]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e78] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e83]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e85] [cursor=pointer]
+      - button "Não lidas" [ref=e86] [cursor=pointer]
+      - button "Favoritas" [ref=e87] [cursor=pointer]
+      - button "Grupos" [ref=e88] [cursor=pointer]
+    - generic [ref=e133] [cursor=pointer]:
+      - img "Bob E2E" [ref=e136]: BE
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - paragraph [ref=e139]: Bob E2E
+          - paragraph [ref=e140]: 23:09
+        - generic [ref=e142]: Toque para conversar
+  - generic [ref=e143]:
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - img "Bob E2E" [ref=e147]: BE
+        - generic [ref=e148]:
+          - paragraph [ref=e149]: Bob E2E
+          - paragraph [ref=e150]: visto por último 19:20 às 19:20
+      - generic [ref=e151]:
+        - button "Favoritar" [ref=e152] [cursor=pointer]:
+          - img [ref=e153]
+        - button "Chamada de vídeo" [ref=e155] [cursor=pointer]:
+          - img [ref=e156]
+        - button "Mídia" [ref=e159] [cursor=pointer]:
+          - img [ref=e160]
+        - button "Pesquisar" [ref=e162] [cursor=pointer]:
+          - img [ref=e163]
+        - button "Menu" [ref=e166] [cursor=pointer]:
+          - img [ref=e167]
+    - generic [ref=e170]:
+      - button "Emoji" [ref=e171] [cursor=pointer]:
+        - img [ref=e172]
+      - button "Anexar" [ref=e175] [cursor=pointer]:
+        - img [ref=e176]
+      - textbox "Digite uma mensagem" [ref=e178]
+      - button "Gravar áudio" [ref=e179] [cursor=pointer]:
+        - img [ref=e180]

@@ -1,0 +1,76 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e45] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e67] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e69]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e78] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e83]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e85] [cursor=pointer]
+      - button "Não lidas" [ref=e86] [cursor=pointer]
+      - button "Favoritas" [ref=e87] [cursor=pointer]
+      - button "Grupos" [ref=e88] [cursor=pointer]
+    - generic [ref=e143] [cursor=pointer]:
+      - img "Bob E2E" [ref=e146]: BE
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - paragraph [ref=e149]: Bob E2E
+          - paragraph [ref=e150]: 23:36
+        - generic [ref=e152]: Mensagem 2 - apagar para todos
+  - generic [ref=e153]:
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - img "Bob E2E" [ref=e157]: BE
+        - generic [ref=e158]:
+          - paragraph [ref=e159]: Bob E2E
+          - paragraph [ref=e160]: visto por último 19:20 às 19:20
+      - generic [ref=e161]:
+        - button "Favoritar" [ref=e162] [cursor=pointer]:
+          - img [ref=e163]
+        - button "Chamada de vídeo" [ref=e165] [cursor=pointer]:
+          - img [ref=e166]
+        - button "Mídia" [ref=e169] [cursor=pointer]:
+          - img [ref=e170]
+        - button "Pesquisar" [ref=e172] [cursor=pointer]:
+          - img [ref=e173]
+        - button "Menu" [ref=e176] [cursor=pointer]:
+          - img [ref=e177]
+    - group [ref=e207]:
+      - button "Opções da mensagem" [ref=e208] [cursor=pointer]:
+        - img [ref=e209]
+      - paragraph [ref=e211]: Mensagem 2 - apagar para todos
+      - generic [ref=e212]:
+        - paragraph [ref=e213]: 20:36
+        - img "Enviada" [ref=e214]
+    - generic [ref=e180]:
+      - button "Emoji" [ref=e181] [cursor=pointer]:
+        - img [ref=e182]
+      - button "Anexar" [ref=e185] [cursor=pointer]:
+        - img [ref=e186]
+      - textbox "Digite uma mensagem" [ref=e188]
+      - button "Gravar áudio" [ref=e189] [cursor=pointer]:
+        - img [ref=e216]

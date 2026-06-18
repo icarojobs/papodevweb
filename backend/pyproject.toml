@@ -11,7 +11,7 @@ addopts = "--cov=app --cov-report=term-missing --cov-report=html --cov-fail-unde
 
 [tool.coverage.run]
 source = ["app"]
-omit = ["app/main.py", "app/realtime/*"]
+omit = ["app/main.py", "app/realtime/*", "app/jobs/scheduler.py"]
 
 [tool.coverage.report]
 exclude_lines = [

@@ -1,0 +1,78 @@
+- generic [ref=e1]:
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - button "Conversas" [active] [ref=e250] [cursor=pointer]:
+          - img [ref=e29]
+        - button "Status" [ref=e251] [cursor=pointer]:
+          - img [ref=e33]
+        - button "Canais" [ref=e252] [cursor=pointer]:
+          - img [ref=e43]
+        - button "Comunidades" [ref=e253] [cursor=pointer]:
+          - img [ref=e46]
+        - button "Meta AI" [ref=e254] [cursor=pointer]:
+          - img [ref=e51]
+      - generic [ref=e62]:
+        - button "Configurações" [ref=e255] [cursor=pointer]:
+          - img [ref=e64]
+        - button "Perfil" [ref=e256] [cursor=pointer]:
+          - img "Usuário Teste" [ref=e257]: UT
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - paragraph [ref=e73]: Papo Dev Web
+        - generic [ref=e74]:
+          - button "Nova conversa" [ref=e258] [cursor=pointer]:
+            - img [ref=e76]
+          - button "Menu" [ref=e259] [cursor=pointer]:
+            - img [ref=e79]
+      - generic [ref=e82]:
+        - generic:
+          - img
+        - textbox "Buscar conversas" [ref=e260]:
+          - /placeholder: Pesquisar ou começar uma nova conversa
+      - generic [ref=e84]:
+        - button "Tudo" [pressed] [ref=e261] [cursor=pointer]
+        - button "Não lidas" [ref=e262] [cursor=pointer]
+        - button "Favoritas" [ref=e263] [cursor=pointer]
+        - button "Grupos" [ref=e264] [cursor=pointer]
+      - generic [ref=e133] [cursor=pointer]:
+        - img "Alice E2E" [ref=e265]: AE
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - paragraph [ref=e139]: Alice E2E
+            - paragraph [ref=e140]: 23:01
+          - generic [ref=e142]: 📷 Foto
+    - generic [ref=e143]:
+      - generic [ref=e144]:
+        - generic [ref=e145]:
+          - img "Alice E2E" [ref=e266]: AE
+          - generic [ref=e148]:
+            - paragraph [ref=e149]: Alice E2E
+            - paragraph [ref=e150]: visto por último 19:20 às 19:20
+        - generic [ref=e151]:
+          - button "Favoritar" [ref=e267] [cursor=pointer]:
+            - img [ref=e153]
+          - button "Chamada de vídeo" [ref=e268] [cursor=pointer]:
+            - img [ref=e156]
+          - button "Mídia" [ref=e269] [cursor=pointer]:
+            - img [ref=e160]
+          - button "Pesquisar" [ref=e270] [cursor=pointer]:
+            - img [ref=e163]
+          - button "Menu" [ref=e271] [cursor=pointer]:
+            - img [ref=e167]
+      - generic [ref=e184]:
+        - img "01-Screenshot.png" [ref=e272]
+        - generic [ref=e186]:
+          - paragraph [ref=e187]: 20:01
+          - img "Enviada" [ref=e273]
+      - generic [ref=e170]:
+        - button "Emoji" [ref=e274] [cursor=pointer]:
+          - img [ref=e172]
+        - button "Anexar" [ref=e275] [cursor=pointer]:
+          - img [ref=e176]
+        - textbox "Digite uma mensagem" [ref=e276]
+        - button "Gravar áudio" [ref=e277] [cursor=pointer]:
+          - img [ref=e180]
+  - generic:
+    - generic:
+      - tooltip "Conversas": Conversas

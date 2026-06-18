@@ -1,0 +1,68 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e42] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e45] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e67] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e69]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e75] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e78] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [active] [ref=e83]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+        - text: Bob
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e85] [cursor=pointer]
+      - button "Não lidas" [ref=e86] [cursor=pointer]
+      - button "Favoritas" [ref=e87] [cursor=pointer]
+      - button "Grupos" [ref=e88] [cursor=pointer]
+    - generic [ref=e89]:
+      - paragraph [ref=e141]: Conversas
+      - generic [ref=e90] [cursor=pointer]:
+        - img "Bob E2E" [ref=e93]: BE
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - paragraph [ref=e96]: Bob E2E
+            - paragraph [ref=e97]: 23:36
+          - generic [ref=e99]: 🚫 Esta mensagem foi apagada
+      - paragraph [ref=e142]: Contatos
+      - generic [ref=e143] [cursor=pointer]:
+        - img "Bob E2E" [ref=e146]: BE
+        - generic [ref=e147]:
+          - paragraph [ref=e149]: Bob E2E
+          - generic [ref=e151]: bob.e2e@example.com
+  - generic [ref=e102]:
+    - generic [ref=e103]:
+      - img [ref=e105]
+      - paragraph [ref=e110]: Download WhatsApp for Windows
+      - paragraph [ref=e111]: Get extra features like voice and video calling, screen sharing and more.
+      - button "Download" [ref=e112] [cursor=pointer]
+    - generic [ref=e113]:
+      - generic [ref=e114]:
+        - img [ref=e116] [cursor=pointer]
+        - paragraph [ref=e119]: Send document
+      - generic [ref=e120]:
+        - img [ref=e122] [cursor=pointer]
+        - paragraph [ref=e125]: Add contact
+      - generic [ref=e126]:
+        - img [ref=e129] [cursor=pointer]
+        - paragraph [ref=e140]: Ask Meta AI

@@ -4,4 +4,6 @@ pytest-cov==6.0.0
 httpx==0.28.1
 asgi-lifespan==2.1.0
 mongomock-motor==0.0.34
+boto3==1.35.99
+moto[server]==5.0.28
 ruff==0.8.6

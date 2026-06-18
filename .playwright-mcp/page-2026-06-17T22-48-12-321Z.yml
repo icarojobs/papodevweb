@@ -1,0 +1,59 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e247] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e248] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e249] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e250] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e251] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e252] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e253] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e254]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e255] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e256] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e257]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e258] [cursor=pointer]
+      - button "Não lidas" [ref=e259] [cursor=pointer]
+      - button "Favoritas" [ref=e260] [cursor=pointer]
+      - button "Grupos" [ref=e261] [cursor=pointer]
+    - generic [ref=e100] [cursor=pointer]:
+      - img "Alice E2E" [ref=e262]: AE
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - paragraph [ref=e106]: Alice E2E
+          - paragraph [ref=e107]: 22:29
+        - generic [ref=e109]: 🎤 Áudio
+  - generic [ref=e264]:
+    - generic [ref=e265]:
+      - img [ref=e267]
+      - paragraph [ref=e272]: Download WhatsApp for Windows
+      - paragraph [ref=e273]: Get extra features like voice and video calling, screen sharing and more.
+      - button "Download" [ref=e274] [cursor=pointer]
+    - generic [ref=e275]:
+      - generic [ref=e276]:
+        - img [ref=e278] [cursor=pointer]
+        - paragraph [ref=e281]: Send document
+      - generic [ref=e282]:
+        - img [ref=e284] [cursor=pointer]
+        - paragraph [ref=e287]: Add contact
+      - generic [ref=e288]:
+        - img [ref=e291] [cursor=pointer]
+        - paragraph [ref=e302]: Ask Meta AI

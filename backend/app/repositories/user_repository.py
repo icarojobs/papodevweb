@@ -1,11 +1,12 @@
 """Repositório de usuários — única camada que conhece detalhes do MongoDB."""
 
-from bson import ObjectId
-from bson.errors import InvalidId
+import re
+
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from app.core.constants import USERS_COLLECTION
+from app.core.constants import MAX_SEARCH_RESULTS, USERS_COLLECTION
 from app.models.user import User
+from app.repositories.object_id import to_object_id, to_object_ids
 
 
 class UserRepository:
@@ -19,12 +20,37 @@ class UserRepository:
         return User.from_document(document) if document else None
 
     async def get_by_id(self, user_id: str) -> User | None:
-        try:
-            object_id = ObjectId(user_id)
-        except (InvalidId, TypeError):
+        object_id = to_object_id(user_id)
+        if object_id is None:
             return None
         document = await self._collection.find_one({"_id": object_id})
         return User.from_document(document) if document else None
+
+    async def get_by_ids(self, user_ids: list[str]) -> list[User]:
+        """Busca vários usuários por id (usado para hidratar participantes)."""
+        object_ids = to_object_ids(user_ids)
+        if not object_ids:
+            return []
+        cursor = self._collection.find({"_id": {"$in": object_ids}})
+        return [User.from_document(document) async for document in cursor]
+
+    async def search(
+        self, query: str, *, exclude_id: str, limit: int = MAX_SEARCH_RESULTS
+    ) -> list[User]:
+        """Busca usuários ativos por nome ou e-mail (parcial, case-insensitive)."""
+        pattern = re.escape(query.strip())
+        filters = {
+            "is_active": True,
+            "$or": [
+                {"full_name": {"$regex": pattern, "$options": "i"}},
+                {"email": {"$regex": pattern, "$options": "i"}},
+            ],
+        }
+        exclude_object_id = to_object_id(exclude_id)
+        if exclude_object_id is not None:
+            filters["_id"] = {"$ne": exclude_object_id}
+        cursor = self._collection.find(filters).limit(limit)
+        return [User.from_document(document) async for document in cursor]
 
     async def create(
         self, *, full_name: str, email: str, hashed_password: str, is_active: bool = False
@@ -44,9 +70,8 @@ class UserRepository:
 
     async def update_password(self, user_id: str, hashed_password: str) -> bool:
         """Atualiza o hash de senha de um usuário. Retorna se houve alteração."""
-        try:
-            object_id = ObjectId(user_id)
-        except (InvalidId, TypeError):
+        object_id = to_object_id(user_id)
+        if object_id is None:
             return False
         result = await self._collection.update_one(
             {"_id": object_id},
@@ -56,9 +81,8 @@ class UserRepository:
 
     async def activate_user(self, user_id: str) -> bool:
         """Marca a conta como ativa. Retorna se o usuário foi encontrado."""
-        try:
-            object_id = ObjectId(user_id)
-        except (InvalidId, TypeError):
+        object_id = to_object_id(user_id)
+        if object_id is None:
             return False
         result = await self._collection.update_one(
             {"_id": object_id},

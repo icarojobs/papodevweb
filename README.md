@@ -20,19 +20,35 @@ Decisões de arquitetura documentadas em [`docs/ADR/`](docs/ADR/).
 
 ```bash
 cp .env.example .env          # ajuste os segredos (ex.: JWT_SECRET_KEY)
+make certs                    # gera o certificado TLS self-signed (HTTPS local)
 docker compose up --build
 ```
 
+> `make up` já executa `make certs` automaticamente se os certificados não existirem.
+
 Serviços expostos:
 
-| Serviço            | URL / Porta                          |
-| ------------------ | ------------------------------------ |
-| Frontend (Vite)    | http://localhost:5173                |
-| Backend (API)      | http://localhost:8000 — docs `/docs` |
-| MongoDB            | localhost:27017                      |
-| Redis              | localhost:6379                       |
-| RabbitMQ (painel)  | http://localhost:15672               |
-| MinIO (console)    | http://localhost:9001                |
+| Serviço            | URL / Porta                           |
+| ------------------ | ------------------------------------- |
+| Frontend (Vite)    | https://localhost:5173                |
+| Backend (API)      | https://localhost:8000 — docs `/docs` |
+| MongoDB            | localhost:27017                       |
+| Redis              | localhost:6379                        |
+| RabbitMQ (painel)  | http://localhost:15672                |
+| MinIO (console)    | http://localhost:9001                 |
+
+### HTTPS local (certificado self-signed)
+
+O frontend e o backend rodam sob **HTTPS** mesmo em `localhost`, pois recursos como
+**notificações** e **geolocalização** exigem um contexto seguro.
+
+- O certificado é gerado em `./certs` (`cert.pem` + `key.pem`) por `make certs`
+  (script `scripts/generate-certs.sh`), com SAN para `localhost` e `127.0.0.1`.
+- A chave privada **não é versionada** (está no `.gitignore`); cada ambiente gera a sua.
+- Por ser **self-signed**, o navegador exibirá um aviso na primeira visita. Aceite o
+  certificado em **https://localhost:5173** e também em **https://localhost:8000**
+  (a API/Socket.IO usa o mesmo certificado, em outra origem).
+- Para recriar o certificado: `make certs` (ou `./scripts/generate-certs.sh --force`).
 
 ## Desenvolvimento
 

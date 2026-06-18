@@ -1,0 +1,22 @@
+- generic [ref=e4]:
+  - img "Papo Dev Web" [ref=e6]
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - heading "Entrar" [level=2] [ref=e10]
+      - paragraph [ref=e11]: Acesse sua conta para continuar no Papo Dev Web.
+    - generic [ref=e13]:
+      - group [ref=e14]:
+        - generic [ref=e15]: E-mail
+        - textbox "E-mail" [ref=e16]:
+          - /placeholder: voce@exemplo.com
+      - group [ref=e17]:
+        - generic [ref=e18]: Senha
+        - textbox "Senha" [ref=e19]:
+          - /placeholder: ••••••••
+      - link "Esqueceu a senha?" [ref=e20] [cursor=pointer]:
+        - /url: /esqueci-senha
+      - button "Entrar" [ref=e21] [cursor=pointer]
+    - paragraph [ref=e23]:
+      - text: Ainda não tem conta?
+      - link "Cadastre-se" [ref=e24] [cursor=pointer]:
+        - /url: /cadastro

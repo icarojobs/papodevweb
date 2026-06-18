@@ -1,0 +1,3 @@
+[    8252ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ https://localhost:5173/node_modules/.vite/deps/chunk-VF3F2CFT.js?v=a15e2152:21608
+[    8337ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ https://localhost:8000/auth/refresh:0
+[    8376ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ https://localhost:8000/auth/refresh:0

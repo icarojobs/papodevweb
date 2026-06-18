@@ -147,7 +147,11 @@ async def logout(response: Response) -> None:
     response.delete_cookie(REFRESH_TOKEN_COOKIE_NAME, path="/auth")
 
 
-@router.post("/forgot-password", response_model=MessageResponse, status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/forgot-password",
+    response_model=MessageResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
 async def forgot_password(
     payload: ForgotPasswordRequest,
     service: Annotated[AuthService, Depends(get_auth_service)],

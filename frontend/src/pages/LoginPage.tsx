@@ -33,7 +33,7 @@ export function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data)
-      navigate(ROUTES.HOME)
+      navigate(ROUTES.CHAT)
     } catch (error) {
       toast({ title: getErrorMessage(error), status: 'error', isClosable: true })
     }

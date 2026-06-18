@@ -1,0 +1,84 @@
+- generic [ref=e25]:
+  - generic [ref=e26]:
+    - generic [ref=e27]:
+      - button "Conversas" [ref=e350] [cursor=pointer]:
+        - img [ref=e29]
+      - button "Status" [ref=e351] [cursor=pointer]:
+        - img [ref=e33]
+      - button "Canais" [ref=e352] [cursor=pointer]:
+        - img [ref=e43]
+      - button "Comunidades" [ref=e353] [cursor=pointer]:
+        - img [ref=e46]
+      - button "Meta AI" [ref=e354] [cursor=pointer]:
+        - img [ref=e51]
+    - generic [ref=e62]:
+      - button "Configurações" [ref=e355] [cursor=pointer]:
+        - img [ref=e64]
+      - button "Perfil" [ref=e356] [cursor=pointer]:
+        - img "Usuário Teste" [ref=e357]: UT
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Papo Dev Web
+      - generic [ref=e74]:
+        - button "Nova conversa" [ref=e358] [cursor=pointer]:
+          - img [ref=e76]
+        - button "Menu" [ref=e359] [cursor=pointer]:
+          - img [ref=e79]
+    - generic [ref=e82]:
+      - generic:
+        - img
+      - textbox "Buscar conversas" [ref=e360]:
+        - /placeholder: Pesquisar ou começar uma nova conversa
+    - generic [ref=e84]:
+      - button "Tudo" [pressed] [ref=e361] [cursor=pointer]
+      - button "Não lidas" [ref=e362] [cursor=pointer]
+      - button "Favoritas" [ref=e363] [cursor=pointer]
+      - button "Grupos 1" [ref=e364] [cursor=pointer]
+    - generic [ref=e89]:
+      - generic [ref=e365] [cursor=pointer]:
+        - img "Time Dev" [ref=e368]: TD
+        - generic [ref=e369]:
+          - generic [ref=e370]:
+            - paragraph [ref=e371]: Time Dev
+            - paragraph [ref=e372]: 22:48
+          - generic [ref=e374]: Toque para conversar
+      - generic [ref=e100] [cursor=pointer]:
+        - img "Alice E2E" [ref=e375]: AE
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - paragraph [ref=e106]: Alice E2E
+            - paragraph [ref=e107]: 22:29
+          - generic [ref=e109]: 🎤 Áudio
+  - generic [ref=e376]:
+    - generic [ref=e377]:
+      - generic [ref=e378]:
+        - img "Time Dev" [ref=e380]: TD
+        - generic [ref=e381]:
+          - paragraph [ref=e382]: Time Dev
+          - paragraph [ref=e383]: Usuário Teste, Alice E2E
+      - generic [ref=e384]:
+        - button "Favoritar" [ref=e385] [cursor=pointer]:
+          - img [ref=e386]
+        - button "Chamada de vídeo" [ref=e388] [cursor=pointer]:
+          - img [ref=e389]
+        - button "Mídia" [ref=e392] [cursor=pointer]:
+          - img [ref=e393]
+        - button "Pesquisar" [ref=e395] [cursor=pointer]:
+          - img [ref=e396]
+        - button "Menu" [expanded] [ref=e399] [cursor=pointer]:
+          - img [ref=e400]
+        - menu [ref=e417]:
+          - menuitem "Sair do grupo" [active] [ref=e418] [cursor=pointer]:
+            - img [ref=e420]
+            - generic: Sair do grupo
+          - menuitem "Excluir conversa" [ref=e423] [cursor=pointer]:
+            - img [ref=e425]
+            - generic: Excluir conversa
+    - generic [ref=e403]:
+      - button "Emoji" [ref=e404] [cursor=pointer]:
+        - img [ref=e405]
+      - button "Anexar" [ref=e408] [cursor=pointer]:
+        - img [ref=e409]
+      - textbox "Digite uma mensagem" [ref=e411]
+      - button "Gravar áudio" [ref=e412] [cursor=pointer]:
+        - img [ref=e413]
