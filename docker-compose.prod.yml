@@ -1,0 +1,196 @@
+# ==========================================================================
+# Produção — Papo Dev Web (atrás do Traefik, na rede externa "web").
+# Diferenças vs docker-compose.yml (dev):
+#   - sem volumes de código, sem --reload, sem certs self-signed
+#   - sem portas publicadas para os serviços de dados (ficam privados)
+#   - roteamento/HTTPS via labels do Traefik (resolver DNS-01 "cloudflare")
+#   - backend/frontend SEM container_name e SEM portas -> permitem o
+#     zero-downtime rollout (escala 2x, health, remove o antigo)
+# ==========================================================================
+name: papodevweb
+
+services:
+  mongodb:
+    # 4.4 é a última versão oficial que roda em CPU SEM AVX (o VPS é QEMU sem
+    # AVX; mongo 5+ aborta com "Illegal instruction"). O app usa só CRUD básico.
+    # Healthcheck usa o shell legado `mongo` (o `mongosh` só existe no 5+).
+    image: mongo:4.4
+    container_name: papodevweb-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: papodevweb-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: papodevweb-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - internal
+
+  minio:
+    image: minio/minio:latest
+    container_name: papodevweb-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      # Faz o MinIO gerar URLs/redirecionamentos no domínio público.
+      MINIO_SERVER_URL: https://${MEDIA_HOST}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.papodevweb-media.rule=Host(`${MEDIA_HOST}`)"
+      - "traefik.http.routers.papodevweb-media.entrypoints=websecure"
+      - "traefik.http.routers.papodevweb-media.tls.certresolver=cloudflare"
+      - "traefik.http.services.papodevweb-media.loadbalancer.server.port=9000"
+
+  # Cria/garante o bucket público de mídia no startup (idempotente).
+  minio-init:
+    image: minio/mc:latest
+    container_name: papodevweb-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      mc mb --ignore-existing local/${MINIO_BUCKET};
+      mc anonymous set download local/${MINIO_BUCKET};
+      exit 0;
+      "
+    networks:
+      - internal
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    image: papodevweb-backend:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.papodevweb-api.rule=Host(`${API_HOST}`)"
+      - "traefik.http.routers.papodevweb-api.entrypoints=websecure"
+      - "traefik.http.routers.papodevweb-api.tls.certresolver=cloudflare"
+      - "traefik.http.routers.papodevweb-api.middlewares=papodevweb-retry"
+      - "traefik.http.services.papodevweb-api.loadbalancer.server.port=8000"
+      # Healthcheck ativo: o Traefik só roteia para réplicas saudáveis.
+      - "traefik.http.services.papodevweb-api.loadbalancer.healthcheck.path=/health"
+      - "traefik.http.services.papodevweb-api.loadbalancer.healthcheck.interval=1s"
+      - "traefik.http.services.papodevweb-api.loadbalancer.healthcheck.timeout=2s"
+      # Retry: re-tenta em outra réplica em erro de conexão (zero-downtime no rollout).
+      - "traefik.http.middlewares.papodevweb-retry.retry.attempts=6"
+      - "traefik.http.middlewares.papodevweb-retry.retry.initialinterval=100ms"
+      # Sticky sessions: necessário para o polling do Socket.IO entre réplicas
+      # (inclusive durante o rollout, quando há 2 contêineres no ar).
+      - "traefik.http.services.papodevweb-api.loadbalancer.sticky.cookie=true"
+      - "traefik.http.services.papodevweb-api.loadbalancer.sticky.cookie.name=papodevweb_affinity"
+      - "traefik.http.services.papodevweb-api.loadbalancer.sticky.cookie.secure=true"
+      - "traefik.http.services.papodevweb-api.loadbalancer.sticky.cookie.httponly=true"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_SOCKET_URL: ${VITE_SOCKET_URL}
+    image: papodevweb-frontend:latest
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      # Apex serve a aplicação.
+      - "traefik.http.routers.papodevweb-fe.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.papodevweb-fe.entrypoints=websecure"
+      - "traefik.http.routers.papodevweb-fe.tls.certresolver=cloudflare"
+      - "traefik.http.routers.papodevweb-fe.middlewares=papodevweb-retry"
+      - "traefik.http.services.papodevweb-fe.loadbalancer.server.port=80"
+      - "traefik.http.services.papodevweb-fe.loadbalancer.healthcheck.path=/healthz"
+      - "traefik.http.services.papodevweb-fe.loadbalancer.healthcheck.interval=2s"
+      - "traefik.http.services.papodevweb-fe.loadbalancer.healthcheck.timeout=2s"
+      # www -> apex (mantém a origem canônica p/ CORS e cookies).
+      - "traefik.http.routers.papodevweb-www.rule=Host(`www.${APP_HOST}`)"
+      - "traefik.http.routers.papodevweb-www.entrypoints=websecure"
+      - "traefik.http.routers.papodevweb-www.tls.certresolver=cloudflare"
+      - "traefik.http.routers.papodevweb-www.middlewares=papodevweb-www-redirect"
+      - "traefik.http.middlewares.papodevweb-www-redirect.redirectregex.regex=^https://www\\.(.*)"
+      - "traefik.http.middlewares.papodevweb-www-redirect.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.papodevweb-www-redirect.redirectregex.permanent=true"
+
+volumes:
+  mongodb_data:
+  redis_data:
+  rabbitmq_data:
+  minio_data:
+
+networks:
+  web:
+    external: true
+  internal:
+    driver: bridge

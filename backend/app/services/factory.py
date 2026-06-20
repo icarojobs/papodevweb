@@ -28,23 +28,25 @@ def get_redis() -> Redis:
 
 @lru_cache
 def get_minio() -> Minio:
-    """Cliente MinIO interno (operações na rede do Docker)."""
-    return _build_minio(get_settings().minio_endpoint)
+    """Cliente MinIO interno (operações na rede do Docker, normalmente HTTP)."""
+    return _build_minio(get_settings().minio_endpoint, secure=get_settings().minio_use_ssl)
 
 
 @lru_cache
 def get_minio_public() -> Minio:
-    """Cliente MinIO público — assina URLs acessíveis pelo navegador."""
-    return _build_minio(get_settings().minio_public_endpoint)
+    """Cliente MinIO público — assina URLs acessíveis pelo navegador (HTTPS em prod)."""
+    return _build_minio(
+        get_settings().minio_public_endpoint, secure=get_settings().minio_public_use_ssl
+    )
 
 
-def _build_minio(endpoint: str) -> Minio:
+def _build_minio(endpoint: str, *, secure: bool) -> Minio:
     settings = get_settings()
     return Minio(
         endpoint,
         access_key=settings.minio_root_user,
         secret_key=settings.minio_root_password,
-        secure=settings.minio_use_ssl,
+        secure=secure,
         region=settings.minio_region,
     )
 

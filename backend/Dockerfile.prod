@@ -1,0 +1,26 @@
+# Imagem de produção do backend (FastAPI + Socket.IO).
+# Sem dependências de dev, sem --reload e sem TLS (o Traefik termina o HTTPS).
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# Apenas dependências de runtime (requirements.txt, sem requirements-dev.txt).
+COPY requirements.txt ./
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# .dockerignore já exclui tests/, .venv/, .env, caches.
+COPY . .
+
+EXPOSE 8000
+
+# Healthcheck via stdlib (sem precisar de curl na imagem).
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
+  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health',timeout=4).status==200 else 1)"
+
+# Um worker por contêiner: o Socket.IO escala por réplicas (Redis manager) com
+# sticky sessions no Traefik. NÃO use múltiplos workers aqui (quebra o polling).
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]

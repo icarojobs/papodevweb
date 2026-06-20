@@ -24,7 +24,11 @@ class Settings(BaseSettings):
     minio_root_user: str = "minioadmin"
     minio_root_password: str = "minioadmin"
     minio_bucket: str = "papodevweb-media"
+    # SSL do endpoint INTERNO (rede docker -> minio:9000, normalmente HTTP).
     minio_use_ssl: bool = False
+    # SSL do endpoint PÚBLICO (URLs assinadas p/ o navegador). Em produção o
+    # MinIO fica atrás do Traefik com HTTPS, então as URLs precisam ser https://.
+    minio_public_use_ssl: bool = False
     # Região fixa evita lookup de região (GetBucketLocation) ao assinar URLs com
     # o endpoint público, que não é alcançável de dentro do contêiner.
     minio_region: str = "us-east-1"
@@ -41,6 +45,11 @@ class Settings(BaseSettings):
     smtp_port: int = 1025
     smtp_from: str = "no-reply@papodevweb.local"
     smtp_from_name: str = "Papo Dev Web"
+    # Autenticação/criptografia do SMTP (vazio/False = Mailpit em desenvolvimento;
+    # provedores de produção exigem usuário/senha e STARTTLS, normalmente na 587).
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_use_tls: bool = False
 
     # CORS
     frontend_origin: str = "http://localhost:5173"

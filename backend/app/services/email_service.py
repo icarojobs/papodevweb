@@ -19,7 +19,16 @@ async def _send_email(to_email: str, subject: str, text_body: str, html_body: st
     message.set_content(text_body)
     message.add_alternative(html_body, subtype="html")
 
-    await aiosmtplib.send(message, hostname=settings.smtp_host, port=settings.smtp_port)
+    # Auth/TLS são opcionais: ausentes em desenvolvimento (Mailpit), obrigatórios
+    # na maioria dos provedores de produção (STARTTLS + usuário/senha).
+    options: dict[str, object] = {"hostname": settings.smtp_host, "port": settings.smtp_port}
+    if settings.smtp_use_tls:
+        options["start_tls"] = True
+    if settings.smtp_user:
+        options["username"] = settings.smtp_user
+        options["password"] = settings.smtp_password
+
+    await aiosmtplib.send(message, **options)
 
 
 async def send_email_verification_email(to_email: str, verify_link: str) -> None:

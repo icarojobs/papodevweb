@@ -1,0 +1,38 @@
+# CI/CD — deploy de produção com zero-downtime no VPS (cloudprime).
+# Roda no self-hosted runner do PRÓPRIO repo (instalado no servidor),
+# então o deploy é local: sincroniza o código e executa o rollout.
+name: Deploy (produção)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nunca roda dois deploys ao mesmo tempo; não cancela um deploy em andamento.
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, cloudprime]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sincronizar código para o diretório do projeto
+        run: |
+          set -euo pipefail
+          DEST="/home/server/projects/${{ github.repository_owner }}/${{ github.event.repository.name }}"
+          mkdir -p "$DEST"
+          # Espelha o repo no destino preservando .env e volumes/dados do servidor.
+          rsync -a --delete \
+            --exclude '.git' \
+            --exclude '.env' \
+            ./ "$DEST/"
+
+      - name: Deploy zero-downtime
+        run: |
+          set -euo pipefail
+          DEST="/home/server/projects/${{ github.repository_owner }}/${{ github.event.repository.name }}"
+          bash "$DEST/scripts/deploy.prod.sh"
