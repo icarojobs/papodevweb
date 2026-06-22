@@ -1,19 +1,36 @@
-"""Envio de e-mails via SMTP (Mailpit em desenvolvimento)."""
+"""Envio de e-mails via SMTP.
+
+A configuração de SMTP é resolvida em tempo de envio: usa o que o admin salvou
+em /admin (banco) e, na ausência, faz fallback para o .env. Ver
+:class:`~app.services.settings_service.SettingsService`.
+"""
 
 from email.message import EmailMessage
 
 import aiosmtplib
 
-from app.core.config import get_settings
-from app.core.constants import EMAIL_VERIFICATION_SUBJECT, PASSWORD_RESET_EMAIL_SUBJECT
+from app.core.constants import (
+    EMAIL_VERIFICATION_SUBJECT,
+    PASSWORD_RESET_EMAIL_SUBJECT,
+    TEST_EMAIL_SUBJECT,
+)
+from app.db.mongodb import get_database
+from app.repositories.settings_repository import SettingsRepository
+from app.services.settings_service import EmailConfig, SettingsService
+
+
+async def _effective_config() -> EmailConfig:
+    """Resolve a configuração de SMTP em uso (banco -> .env)."""
+    service = SettingsService(SettingsRepository(get_database()))
+    return await service.get_effective_email_config()
 
 
 async def _send_email(to_email: str, subject: str, text_body: str, html_body: str) -> None:
-    """Monta e envia um e-mail multipart via SMTP."""
-    settings = get_settings()
+    """Monta e envia um e-mail multipart via SMTP usando a config efetiva."""
+    config = await _effective_config()
 
     message = EmailMessage()
-    message["From"] = f"{settings.smtp_from_name} <{settings.smtp_from}>"
+    message["From"] = f"{config.from_name} <{config.from_email}>"
     message["To"] = to_email
     message["Subject"] = subject
     message.set_content(text_body)
@@ -21,14 +38,32 @@ async def _send_email(to_email: str, subject: str, text_body: str, html_body: st
 
     # Auth/TLS são opcionais: ausentes em desenvolvimento (Mailpit), obrigatórios
     # na maioria dos provedores de produção (STARTTLS + usuário/senha).
-    options: dict[str, object] = {"hostname": settings.smtp_host, "port": settings.smtp_port}
-    if settings.smtp_use_tls:
+    options: dict[str, object] = {"hostname": config.host, "port": config.port}
+    if config.use_tls:
         options["start_tls"] = True
-    if settings.smtp_user:
-        options["username"] = settings.smtp_user
-        options["password"] = settings.smtp_password
+    if config.username:
+        options["username"] = config.username
+        options["password"] = config.password
 
     await aiosmtplib.send(message, **options)
+
+
+async def send_test_email(to_email: str) -> None:
+    """Envia um e-mail de teste para validar a configuração de SMTP do /admin."""
+    await _send_email(
+        to_email,
+        TEST_EMAIL_SUBJECT,
+        (
+            "Este é um e-mail de teste do Papo Dev Web.\n\n"
+            "Se você recebeu esta mensagem, o e-mail de disparo está configurado "
+            "corretamente."
+        ),
+        """
+        <p>Este é um <strong>e-mail de teste</strong> do Papo Dev Web.</p>
+        <p>Se você recebeu esta mensagem, o e-mail de disparo está configurado
+        corretamente. ✅</p>
+        """,
+    )
 
 
 async def send_email_verification_email(to_email: str, verify_link: str) -> None:

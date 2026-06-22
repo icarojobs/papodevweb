@@ -1,8 +1,38 @@
-"""Testes do serviço de e-mail (mockando o transporte SMTP)."""
+"""Testes do serviço de e-mail (mockando o transporte SMTP e a config efetiva)."""
 
-from app.api.deps import get_email_sender, get_verification_email_sender
-from app.core.config import Settings, get_settings
+from mongomock_motor import AsyncMongoMockClient
+
+from app.api.deps import (
+    get_email_sender,
+    get_test_email_sender,
+    get_verification_email_sender,
+)
+from app.core.config import get_settings
+from app.core.constants import TEST_EMAIL_SUBJECT
 from app.services import email_service
+from app.services.settings_service import EmailConfig
+
+
+def _config(**overrides) -> EmailConfig:
+    """Cria uma EmailConfig de teste com valores padrão sobreponíveis."""
+    base = {
+        "host": "smtp.local",
+        "port": 1025,
+        "username": "",
+        "password": "",
+        "from_email": "no-reply@papodevweb.local",
+        "from_name": "Papo Dev Web",
+        "use_tls": False,
+    }
+    base.update(overrides)
+    return EmailConfig(**base)
+
+
+def _patch_config(monkeypatch, config: EmailConfig) -> None:
+    async def fake_effective_config() -> EmailConfig:
+        return config
+
+    monkeypatch.setattr(email_service, "_effective_config", fake_effective_config)
 
 
 def test_get_email_sender_returns_real_sender():
@@ -13,12 +43,17 @@ def test_get_verification_email_sender_returns_real_sender():
     assert get_verification_email_sender() is email_service.send_email_verification_email
 
 
+def test_get_test_email_sender_returns_real_sender():
+    assert get_test_email_sender() is email_service.send_test_email
+
+
 async def test_send_email_verification_email(monkeypatch):
     captured = {}
 
-    async def fake_send(message, hostname, port):
+    async def fake_send(message, **kwargs):
         captured["message"] = message
 
+    _patch_config(monkeypatch, _config())
     monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
 
     await email_service.send_email_verification_email(
@@ -32,20 +67,19 @@ async def test_send_email_verification_email(monkeypatch):
 async def test_send_password_reset_email(monkeypatch):
     captured = {}
 
-    async def fake_send(message, hostname, port):
+    async def fake_send(message, **kwargs):
         captured["message"] = message
-        captured["hostname"] = hostname
-        captured["port"] = port
+        captured["kwargs"] = kwargs
 
+    _patch_config(monkeypatch, _config(host="smtp.reset", port=2525))
     monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
 
     await email_service.send_password_reset_email(
         "destino@example.com", "http://localhost:5173/redefinir-senha?token=abc123"
     )
 
-    settings = get_settings()
-    assert captured["hostname"] == settings.smtp_host
-    assert captured["port"] == settings.smtp_port
+    assert captured["kwargs"]["hostname"] == "smtp.reset"
+    assert captured["kwargs"]["port"] == 2525
     assert captured["message"]["To"] == "destino@example.com"
     assert "abc123" in captured["message"].get_body(("plain",)).get_content()
 
@@ -57,6 +91,7 @@ async def test_send_email_without_auth_omits_credentials(monkeypatch):
     async def fake_send(message, **kwargs):
         captured.update(kwargs)
 
+    _patch_config(monkeypatch, _config(use_tls=False, username=""))
     monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
 
     await email_service.send_password_reset_email("dev@example.com", "http://localhost/x?token=t")
@@ -73,15 +108,17 @@ async def test_send_email_uses_auth_and_tls_when_configured(monkeypatch):
     async def fake_send(message, **kwargs):
         captured.update(kwargs)
 
-    custom = Settings(
-        smtp_host="smtp.provedor.com",
-        smtp_port=587,
-        smtp_user="apikey",
-        smtp_password="segredo",
-        smtp_use_tls=True,
+    _patch_config(
+        monkeypatch,
+        _config(
+            host="smtp.provedor.com",
+            port=587,
+            username="apikey",
+            password="segredo",
+            use_tls=True,
+        ),
     )
     monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
-    monkeypatch.setattr(email_service, "get_settings", lambda: custom)
 
     await email_service.send_email_verification_email(
         "prod@example.com", "https://papodevweb.com.br/confirmar-email?token=t"
@@ -92,3 +129,30 @@ async def test_send_email_uses_auth_and_tls_when_configured(monkeypatch):
     assert captured["username"] == "apikey"
     assert captured["password"] == "segredo"
     assert captured["start_tls"] is True
+
+
+async def test_send_test_email(monkeypatch):
+    captured = {}
+
+    async def fake_send(message, **kwargs):
+        captured["message"] = message
+
+    _patch_config(monkeypatch, _config())
+    monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
+
+    await email_service.send_test_email("admin@example.com")
+
+    assert captured["message"]["To"] == "admin@example.com"
+    assert captured["message"]["Subject"] == TEST_EMAIL_SUBJECT
+
+
+async def test_effective_config_falls_back_to_env(monkeypatch):
+    """Sem configuração no banco, a config efetiva vem do .env."""
+    client = AsyncMongoMockClient()
+    monkeypatch.setattr(email_service, "get_database", lambda: client["papodevweb_test"])
+
+    config = await email_service._effective_config()
+
+    settings = get_settings()
+    assert config.host == settings.smtp_host
+    assert config.port == settings.smtp_port

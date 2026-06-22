@@ -10,6 +10,10 @@ from enum import StrEnum
 USERS_COLLECTION = "users"
 CONVERSATIONS_COLLECTION = "conversations"
 MESSAGES_COLLECTION = "messages"
+SETTINGS_COLLECTION = "settings"
+
+# Chave (singleton) do documento de configuração de e-mail de disparo (SMTP).
+EMAIL_SETTINGS_KEY = "email"
 
 # ----- Autenticação / JWT -----
 JWT_ALGORITHM = "HS256"
@@ -42,6 +46,16 @@ ERR_PASSWORDS_DO_NOT_MATCH = "As senhas não conferem."
 ERR_INVALID_TOKEN = "Token inválido ou expirado."
 ERR_USER_NOT_FOUND = "Usuário não encontrado."
 ERR_EMAIL_NOT_VERIFIED = "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada."
+ERR_ADMIN_REQUIRED = "Acesso restrito a administradores."
+ERR_EMAIL_SETTINGS_NOT_CONFIGURED = (
+    "Configure o e-mail de disparo (servidor SMTP) antes de enviar e-mails."
+)
+ERR_TEST_EMAIL_FAILED = "Falha ao enviar o e-mail de teste. Verifique as configurações de SMTP."
+
+# ----- E-mail de disparo (configuração administrativa) -----
+TEST_EMAIL_SUBJECT = "E-mail de teste — Papo Dev Web"
+MSG_EMAIL_SETTINGS_SAVED = "Configurações de e-mail salvas com sucesso."
+MSG_TEST_EMAIL_SENT = "E-mail de teste enviado com sucesso."
 
 # ----- Mensagens de sucesso (pt-br) -----
 # Mensagem genérica: não revela se o e-mail existe (evita enumeração de usuários).

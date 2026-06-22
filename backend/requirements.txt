@@ -13,3 +13,4 @@ pyjwt==2.10.1
 python-multipart==0.0.20
 aiosmtplib==3.0.2
 apscheduler==3.10.4
+cryptography==44.0.0

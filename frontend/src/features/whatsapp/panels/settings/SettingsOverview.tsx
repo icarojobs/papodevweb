@@ -1,6 +1,7 @@
 import { Avatar, Box, Flex, Icon, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react'
 import { FiSearch } from 'react-icons/fi'
 import {
+  MdAdminPanelSettings,
   MdHelpOutline,
   MdLockOutline,
   MdLogout,
@@ -10,7 +11,10 @@ import {
   MdOutlineVpnKey,
   MdPersonOutline,
 } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 
+import { ROUTES } from '@/lib/constants'
+import { useAuthStore } from '@/store/auth.store'
 import { WA } from '../../ui'
 import { SettingNavRow } from './rows'
 
@@ -23,6 +27,8 @@ interface SettingsOverviewProps {
 }
 
 export function SettingsOverview({ userName, about, onNavigate, onOpenShortcuts, onLogout }: SettingsOverviewProps) {
+  const navigate = useNavigate()
+  const isAdmin = useAuthStore((state) => state.user?.is_admin)
   return (
     <Box>
       <Text px={6} pt={6} pb={4} fontSize="2xl" fontWeight="semibold" color={WA.textPrimary}>
@@ -55,6 +61,15 @@ export function SettingsOverview({ userName, about, onNavigate, onOpenShortcuts,
         <SettingNavRow icon={MdNotificationsNone} title="Notifications" subtitle="Messages, groups, sounds" onClick={() => onNavigate('notifications')} />
         <SettingNavRow icon={MdOutlineKeyboard} title="Keyboard shortcuts" subtitle="Quick actions" onClick={onOpenShortcuts} />
         <SettingNavRow icon={MdHelpOutline} title="Help and feedback" subtitle="Help centre, contact us, privacy policy" onClick={() => onNavigate('help')} />
+        {isAdmin && (
+          <SettingNavRow
+            icon={MdAdminPanelSettings}
+            title="Administração"
+            subtitle="Configurações da plataforma (e-mail de disparo)"
+            chevron
+            onClick={() => navigate(ROUTES.ADMIN)}
+          />
+        )}
         <SettingNavRow icon={MdLogout} title="Sair" danger onClick={onLogout} />
       </Box>
     </Box>

@@ -89,3 +89,14 @@ class UserRepository:
             {"$set": {"is_active": True}},
         )
         return result.matched_count == 1
+
+    async def set_admin(self, user_id: str, *, is_admin: bool) -> bool:
+        """Concede ou revoga o acesso administrativo. Retorna se o usuário existe."""
+        object_id = to_object_id(user_id)
+        if object_id is None:
+            return False
+        result = await self._collection.update_one(
+            {"_id": object_id},
+            {"$set": {"is_admin": is_admin}},
+        )
+        return result.matched_count == 1

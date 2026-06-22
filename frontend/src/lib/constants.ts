@@ -12,6 +12,7 @@ export const ROUTES = {
   RESET_PASSWORD: '/redefinir-senha',
   VERIFY_EMAIL: '/confirmar-email',
   TERMS: '/termos',
+  ADMIN: '/admin',
 } as const
 
 // Dias de retenção do histórico (deve refletir RETENTION_DAYS do backend).

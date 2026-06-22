@@ -3,6 +3,7 @@ import { Center, Spinner } from '@chakra-ui/react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { ROUTES } from '@/lib/constants'
+import { AdminSettingsPage } from '@/pages/AdminSettingsPage'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { HomePage } from '@/pages/HomePage'
 import { LandingPage } from '@/pages/LandingPage'
@@ -11,6 +12,7 @@ import { RegisterPage } from '@/pages/RegisterPage'
 import { ResetPasswordPage } from '@/pages/ResetPasswordPage'
 import { TermsPage } from '@/pages/TermsPage'
 import { VerifyEmailPage } from '@/pages/VerifyEmailPage'
+import { AdminRoute } from '@/routes/AdminRoute'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
 import { useAuthStore } from '@/store/auth.store'
 
@@ -42,6 +44,9 @@ export function App() {
       <Route path={ROUTES.TERMS} element={<TermsPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path={ROUTES.CHAT} element={<HomePage />} />
+      </Route>
+      <Route element={<AdminRoute />}>
+        <Route path={ROUTES.ADMIN} element={<AdminSettingsPage />} />
       </Route>
       <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
     </Routes>

@@ -12,3 +12,5 @@ class UserPublic(BaseModel):
     full_name: str
     email: EmailStr
     created_at: datetime
+    # Indica acesso ao painel administrativo (/admin). Falso por padrão.
+    is_admin: bool = False

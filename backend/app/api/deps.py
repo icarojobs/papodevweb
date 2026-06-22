@@ -6,21 +6,28 @@ from typing import Annotated
 from fastapi import Depends, Header, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from app.core.constants import BEARER_SCHEME, ERR_INVALID_TOKEN, TokenType
+from app.core.constants import BEARER_SCHEME, ERR_ADMIN_REQUIRED, ERR_INVALID_TOKEN, TokenType
 from app.core.security import decode_token
 from app.db.mongodb import get_database
 from app.models.user import User
 from app.repositories.conversation_repository import ConversationRepository
 from app.repositories.message_repository import MessageRepository
+from app.repositories.settings_repository import SettingsRepository
 from app.repositories.user_repository import UserRepository
 from app.services.auth_service import AuthService
 from app.services.chat_service import ChatService
-from app.services.email_service import send_email_verification_email, send_password_reset_email
+from app.services.email_service import (
+    send_email_verification_email,
+    send_password_reset_email,
+    send_test_email,
+)
 from app.services.factory import build_media_service, build_presence_service
 from app.services.media_service import MediaService
 from app.services.presence_service import PresenceService
+from app.services.settings_service import SettingsService
 
 EmailSender = Callable[[str, str], Awaitable[None]]
+TestEmailSender = Callable[[str], Awaitable[None]]
 
 
 def get_email_sender() -> EmailSender:
@@ -31,6 +38,11 @@ def get_email_sender() -> EmailSender:
 def get_verification_email_sender() -> EmailSender:
     """Fornece o remetente do e-mail de confirmação (substituível em testes)."""
     return send_email_verification_email
+
+
+def get_test_email_sender() -> TestEmailSender:
+    """Fornece o remetente do e-mail de teste do /admin (substituível em testes)."""
+    return send_test_email
 
 
 def get_db() -> AsyncIOMotorDatabase:
@@ -112,3 +124,19 @@ async def get_current_user(
             headers={"WWW-Authenticate": BEARER_SCHEME},
         )
     return user
+
+
+async def get_current_admin(
+    user: Annotated[User, Depends(get_current_user)],
+) -> User:
+    """Garante que o usuário autenticado é administrador (acesso ao /admin)."""
+    if not user.is_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=ERR_ADMIN_REQUIRED)
+    return user
+
+
+def get_settings_service(
+    database: Annotated[AsyncIOMotorDatabase, Depends(get_db)],
+) -> SettingsService:
+    """Serviço de configurações da plataforma (e-mail de disparo)."""
+    return SettingsService(SettingsRepository(database))

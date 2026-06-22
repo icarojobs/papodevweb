@@ -3,6 +3,8 @@ export interface UserPublic {
   full_name: string
   email: string
   created_at: string
+  // Acesso ao painel administrativo (/admin). Opcional por compatibilidade.
+  is_admin?: boolean
 }
 
 export interface TokenResponse {

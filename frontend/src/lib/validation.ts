@@ -41,6 +41,23 @@ export const resetPasswordSchema = z
   })
 
 export type LoginFormData = z.infer<typeof loginSchema>
+// Configuração do e-mail de disparo (SMTP) no painel /admin.
+export const emailSettingsSchema = z.object({
+  host: z.string().min(1, 'Informe o servidor SMTP.'),
+  port: z
+    .number({ invalid_type_error: 'Informe uma porta válida.' })
+    .int('Informe uma porta válida.')
+    .min(1, 'Informe uma porta válida.')
+    .max(65535, 'Informe uma porta válida.'),
+  username: z.string(),
+  // Vazia => mantém a senha atual no servidor (write-only).
+  password: z.string(),
+  from_email: z.string().email('Informe um e-mail de remetente válido.'),
+  from_name: z.string(),
+  use_tls: z.boolean(),
+})
+
 export type RegisterFormData = z.infer<typeof registerSchema>
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
+export type EmailSettingsFormData = z.infer<typeof emailSettingsSchema>

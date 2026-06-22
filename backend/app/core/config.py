@@ -39,6 +39,9 @@ class Settings(BaseSettings):
     jwt_refresh_token_expire_days: int = 7
     jwt_reset_token_expire_minutes: int = 30
     jwt_verify_token_expire_hours: int = 24
+    # Chave para criptografar segredos em repouso (ex.: senha SMTP no banco).
+    # Vazio => deriva da jwt_secret_key. Defina uma própria para isolar rotações.
+    settings_secret_key: str = ""
 
     # E-mail / SMTP
     smtp_host: str = "mailpit"

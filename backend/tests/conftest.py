@@ -11,6 +11,7 @@ from app.api.deps import (
     get_email_sender,
     get_media_service,
     get_presence_service,
+    get_test_email_sender,
     get_verification_email_sender,
 )
 from app.main import fastapi_app
@@ -93,7 +94,11 @@ async def client(
 
     fastapi_app.dependency_overrides[get_db] = lambda: mongo_database
     fastapi_app.dependency_overrides[get_email_sender] = lambda: fake_email_sender
+    async def fake_test_email_sender(to_email: str) -> None:
+        sent_emails.append((to_email, "__test__"))
+
     fastapi_app.dependency_overrides[get_verification_email_sender] = lambda: fake_email_sender
+    fastapi_app.dependency_overrides[get_test_email_sender] = lambda: fake_test_email_sender
     fastapi_app.dependency_overrides[get_presence_service] = lambda: presence_service
     fastapi_app.dependency_overrides[get_media_service] = lambda: media_service
     transport = ASGITransport(app=fastapi_app)

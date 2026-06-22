@@ -18,6 +18,7 @@ class User:
         hashed_password: str,
         created_at: datetime,
         is_active: bool,
+        is_admin: bool = False,
     ) -> None:
         self.id = id
         self.full_name = full_name
@@ -25,6 +26,7 @@ class User:
         self.hashed_password = hashed_password
         self.created_at = created_at
         self.is_active = is_active
+        self.is_admin = is_admin
 
     @classmethod
     def from_document(cls, document: dict[str, Any]) -> "User":
@@ -35,6 +37,7 @@ class User:
             hashed_password=document["hashed_password"],
             created_at=document["created_at"],
             is_active=document.get("is_active", False),
+            is_admin=document.get("is_admin", False),
         )
 
     @staticmethod
@@ -47,6 +50,7 @@ class User:
             "email": email,
             "hashed_password": hashed_password,
             "is_active": is_active,
+            "is_admin": False,
             "created_at": datetime.now(UTC),
         }
 
@@ -56,4 +60,5 @@ class User:
             full_name=self.full_name,
             email=self.email,
             created_at=self.created_at,
+            is_admin=self.is_admin,
         )

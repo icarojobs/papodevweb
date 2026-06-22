@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, conversations, health, media, users
+from app.api.routes import admin, auth, conversations, health, media, users
 from app.core.config import get_settings
 from app.db.migrations import run_migrations
 from app.db.mongodb import close_mongo_connection, connect_to_mongo, get_database
@@ -50,6 +50,7 @@ def create_app() -> FastAPI:
     app.include_router(users.router)
     app.include_router(conversations.router)
     app.include_router(media.router)
+    app.include_router(admin.router)
     return app
 
 

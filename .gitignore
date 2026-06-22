@@ -25,3 +25,6 @@ certs/*.pem
 
 # Editores / SO
 .DS_Store
+
+# Store local do pnpm (gerado em builds)
+.pnpm-store/
