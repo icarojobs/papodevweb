@@ -15,6 +15,12 @@ SETTINGS_COLLECTION = "settings"
 # Chave (singleton) do documento de configuração de e-mail de disparo (SMTP).
 EMAIL_SETTINGS_KEY = "email"
 
+# Porta de TLS implícito (SSL): a conexão já nasce criptografada, sem STARTTLS.
+SMTP_IMPLICIT_TLS_PORT = 465
+# Timeout (s) do envio de e-mail — falha rápido em caso de host/porta/TLS errados,
+# em vez de travar no timeout padrão (~60s) do aiosmtplib.
+SMTP_TIMEOUT_SECONDS = 15
+
 # ----- Autenticação / JWT -----
 JWT_ALGORITHM = "HS256"
 REFRESH_TOKEN_COOKIE_NAME = "papodevweb_refresh_token"

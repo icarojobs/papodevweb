@@ -12,6 +12,8 @@ import aiosmtplib
 from app.core.constants import (
     EMAIL_VERIFICATION_SUBJECT,
     PASSWORD_RESET_EMAIL_SUBJECT,
+    SMTP_IMPLICIT_TLS_PORT,
+    SMTP_TIMEOUT_SECONDS,
     TEST_EMAIL_SUBJECT,
 )
 from app.db.mongodb import get_database
@@ -37,10 +39,21 @@ async def _send_email(to_email: str, subject: str, text_body: str, html_body: st
     message.add_alternative(html_body, subtype="html")
 
     # Auth/TLS são opcionais: ausentes em desenvolvimento (Mailpit), obrigatórios
-    # na maioria dos provedores de produção (STARTTLS + usuário/senha).
-    options: dict[str, object] = {"hostname": config.host, "port": config.port}
+    # na maioria dos provedores de produção (usuário/senha + TLS).
+    options: dict[str, object] = {
+        "hostname": config.host,
+        "port": config.port,
+        "timeout": SMTP_TIMEOUT_SECONDS,
+    }
+    # O modo TLS depende da porta: 465 usa TLS implícito (a conexão já nasce
+    # criptografada), enquanto 587/25 usam STARTTLS (upgrade após o handshake).
+    # Mapear use_tls -> start_tls em todas as portas trava na 465 (o servidor
+    # espera TLS imediato e nunca responde ao SMTP em texto puro).
     if config.use_tls:
-        options["start_tls"] = True
+        if config.port == SMTP_IMPLICIT_TLS_PORT:
+            options["use_tls"] = True
+        else:
+            options["start_tls"] = True
     if config.username:
         options["username"] = config.username
         options["password"] = config.password

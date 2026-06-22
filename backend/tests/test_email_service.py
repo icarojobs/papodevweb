@@ -129,6 +129,51 @@ async def test_send_email_uses_auth_and_tls_when_configured(monkeypatch):
     assert captured["username"] == "apikey"
     assert captured["password"] == "segredo"
     assert captured["start_tls"] is True
+    # STARTTLS (587) não deve usar TLS implícito.
+    assert "use_tls" not in captured
+
+
+async def test_send_email_uses_implicit_tls_on_port_465(monkeypatch):
+    """Porta 465: TLS implícito (use_tls), nunca STARTTLS — senão trava no handshake."""
+    captured = {}
+
+    async def fake_send(message, **kwargs):
+        captured.update(kwargs)
+
+    _patch_config(
+        monkeypatch,
+        _config(
+            host="smtp.provedor.com",
+            port=465,
+            username="apikey",
+            password="segredo",
+            use_tls=True,
+        ),
+    )
+    monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
+
+    await email_service.send_test_email("prod@example.com")
+
+    assert captured["port"] == 465
+    assert captured["use_tls"] is True
+    assert "start_tls" not in captured
+
+
+async def test_send_email_sets_timeout(monkeypatch):
+    """O envio define um timeout para falhar rápido com host/porta/TLS errados."""
+    from app.core.constants import SMTP_TIMEOUT_SECONDS
+
+    captured = {}
+
+    async def fake_send(message, **kwargs):
+        captured.update(kwargs)
+
+    _patch_config(monkeypatch, _config())
+    monkeypatch.setattr(email_service.aiosmtplib, "send", fake_send)
+
+    await email_service.send_test_email("admin@example.com")
+
+    assert captured["timeout"] == SMTP_TIMEOUT_SECONDS
 
 
 async def test_send_test_email(monkeypatch):
